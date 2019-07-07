@@ -8,3 +8,5 @@ node_modules
 test/mocha/workspaces/test-workspaces/default/ContractCache
 test/mocha/workspaces/test-workspaces/workspaces/Test-1/ContractCache
 test/mocha/workspaces/test-workspaces/workspaces/Test-2/ContractCache
+package-lock.json
+
