@@ -35,6 +35,16 @@ export function initCore(store) {
   ipcRenderer.on(
     SET_SERVER_STARTED,
     (sender, globalSettings, workspaceSettings, startupMode) => {
+      if (workspaceSettings.server.regtest && workspaceSettings.regtest) {
+          workspaceSettings.server.hostname = workspaceSettings.regtest.hostname;
+          workspaceSettings.server.port = workspaceSettings.regtest.port;
+          workspaceSettings.name = workspaceSettings.regtest.name;
+      }
+
+      const suffix = workspaceSettings.regtest && workspaceSettings.regtest.suffix
+                      ? workspaceSettings.regtest.suffix
+                      : "";
+
       // Get current settings into the store
       store.dispatch(setSettings(globalSettings, workspaceSettings));
 
@@ -45,7 +55,11 @@ export function initCore(store) {
         "0.0.0.0",
         "localhost",
       );
-      const url = `ws://${hostname}:${workspaceSettings.server.port}`;
+
+      console.log('hostname', hostname);
+      console.log('workspaceSettings.server.port', workspaceSettings.server.port);
+      console.log('suffix', suffix);
+      const url = `ws://${hostname}:${workspaceSettings.server.port}${suffix}`;
 
       ipcRenderer.send("web3-provider", url);
       store.dispatch(setRPCProviderUrl(url));
