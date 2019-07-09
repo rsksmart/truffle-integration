@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import RbtcUnits from "../../../helper/rbtc-units";
+import RBTCtcUnits from "../../../helper/rbtc-units";
 
 export default class FormattedEtherValue extends Component {
   render() {
     const weiValueInEth = parseFloat(
-      RbtcUnits.convert(
+      RBTCtcUnits.convert(
         this.props.value,
         this.props.fromUnit,
         this.props.toUnit,
@@ -26,6 +26,6 @@ FormattedEtherValue.propTypes = {
 };
 
 FormattedEtherValue.defaultProps = {
-  fromUnit: "wei",
-  toUnit: "eth",
+  fromUnit: "sat",
+  toUnit: "rbtc",
 };
