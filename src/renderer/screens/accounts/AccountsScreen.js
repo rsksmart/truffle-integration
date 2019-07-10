@@ -13,6 +13,7 @@ class AccountsScreen extends Component {
   }
 
   render() {
+    console.log(this.props.accounts);
     return (
       <div className="AccountsScreen">
         <main>

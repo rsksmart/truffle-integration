@@ -31,8 +31,7 @@ class ServerScreen extends Component {
     this.state = {
       automine:
         typeof props.config.settings.workspace.server.blockTime == "undefined",
-      regtest:
-        props.config.settings.workspace.server.regtest || false
+      regtest: props.config.settings.workspace.server.regtest || false,
     };
   }
 
@@ -131,7 +130,7 @@ class ServerScreen extends Component {
               </StyledSelect>
               {this.props.validationErrors["workspace.server.hostname"] && (
                 <p className="ValidationError">
-                  Must be a valid IP address or "localhost"
+                  Must be a valid IP address or &quot;localhost&quot;
                 </p>
               )}
               {!("workspace.server.hostname" in this.props.validationErrors) &&
@@ -309,10 +308,10 @@ class ServerScreen extends Component {
               <div className="RowItem">
                 <p>
                   When transactions fail, throw an error. If disabled,
-                  transaction failures will only be detectable via the "status"
-                  flag in the transaction receipt. Disabling this feature will
-                  make Ganache handle transaction failures like other Ethereum
-                  clients.
+                  transaction failures will only be detectable via the
+                  &quot;status&quot; flag in the transaction receipt. Disabling
+                  this feature will make Ganache handle transaction failures
+                  like other Ethereum clients.
                 </p>
               </div>
             </div>

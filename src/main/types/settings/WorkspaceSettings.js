@@ -31,8 +31,8 @@ const initialSettings = {
     hostname: "127.0.0.1",
     port: 4445,
     network_id: 7771,
-    suffix: "/websocket"
-  }
+    suffix: "/websocket",
+  },
 };
 
 class WorkspaceSettings extends Settings {

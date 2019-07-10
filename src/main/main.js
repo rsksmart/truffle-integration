@@ -314,6 +314,7 @@ app.on("ready", () => {
       });
 
       chain.on("server-started", data => {
+        console.log(data, 321321312321321);
         if (workspace) {
           mainWindow.webContents.send(SET_KEY_DATA, {
             privateKeys: data.privateKeys || "",

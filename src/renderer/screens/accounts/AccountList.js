@@ -16,7 +16,6 @@ class AccountList extends Component {
       accountAddress: "",
     };
   }
-
   showKeys = (accountAddress, privateKey) => {
     this.setState({
       showKeys: true,

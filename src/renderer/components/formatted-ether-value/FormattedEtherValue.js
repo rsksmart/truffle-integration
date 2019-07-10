@@ -4,13 +4,11 @@ import RBTCtcUnits from "../../../helper/rbtc-units";
 
 export default class FormattedEtherValue extends Component {
   render() {
-    const weiValueInEth = parseFloat(
-      RBTCtcUnits.convert(
-        this.props.value,
-        this.props.fromUnit,
-        this.props.toUnit,
-      ),
-    ).toFixed(2);
+    const weiValueInEth = RBTCtcUnits.convert(
+      this.props.value,
+      this.props.fromUnit,
+      this.props.toUnit,
+    );
     return (
       <span
         title={weiValueInEth}

@@ -3,6 +3,7 @@
 var ganacheLib = require("ganache-core");
 var logging = require("./logging");
 var pkg = require("../../package.json");
+var generateAddressesFromSeed = require("../helper/generateAccount");
 
 if (!process.send) {
   console.log("Not running as child process. Throwing.");
@@ -160,7 +161,7 @@ function startServer(options) {
         data.hdPath = data.hdPath || state.wallet_hdpath;
         data.mnemonic = data.mnemonic || state.mnemonic;
         data.privateKeys = privateKeys;
-
+        console.log(state.mnemonic, "state.mnemonic---------------------");
         process.send({ type: "server-started", data: data });
 
         console.log("Ganache started successfully!");
@@ -170,13 +171,16 @@ function startServer(options) {
       server.on("close", function() {
         process.send({ type: "server-stopped" });
       });
-  } else {
+    } else {
+      let accounts = generateAddressesFromSeed(
+        "state idle scare twist tooth crack blood pond valley lion pass acid",
+      );
       let data = {};
-      data.hdPath = "";
-      data.mnemonic = "";
-      data.privateKeys = "";
+      data.hdPath = accounts.wallet_hdpath;
+      data.mnemonic = accounts.mnemonic;
+      data.privateKeys = accounts.accounts;
       process.send({ type: "server-started", data: data });
-  }
+    }
   });
 }
 
