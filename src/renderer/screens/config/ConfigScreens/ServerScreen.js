@@ -17,6 +17,9 @@ const VALIDATIONS = {
     min: 1,
     max: Number.MAX_SAFE_INTEGER,
   },
+  "workspace.server.suffix": {
+    allowedChars: /^[A-Za-z0-9_]+$/,
+  },
   "workspace.server.blockTime": {
     allowedChars: /^\d*$/,
     min: 1,
@@ -31,8 +34,6 @@ class ServerScreen extends Component {
     this.state = {
       automine:
         typeof props.config.settings.workspace.server.blockTime == "undefined",
-      regtest:
-        props.config.settings.workspace.server.regtest || false
     };
   }
 
@@ -67,15 +68,6 @@ class ServerScreen extends Component {
     });
   };
 
-  toggleRegtest = () => {
-    var newValue = !this.state.regtest;
-    this.props.config.settings.workspace.server.regtest = newValue;
-
-    this.setState({
-      regtest: !this.state.regtest,
-    });
-  };
-
   cleanNumber(value) {
     if (isNaN(value) || value === null || value === undefined) {
       return "";
@@ -107,28 +99,14 @@ class ServerScreen extends Component {
           <h4>HOSTNAME</h4>
           <div className="Row">
             <div className="RowItem">
-              <StyledSelect
+              <input
                 name="workspace.server.hostname"
-                defaultValue={
-                  this.props.config.settings.workspace.server.hostname
-                }
-                changeFunction={this.validateChange}
-              >
-                <option key="0.0.0.0" value="0.0.0.0">
-                  0.0.0.0 - All Interfaces
-                </option>
-                {Object.keys(this.props.network.interfaces).map(key => {
-                  return this.props.network.interfaces[key].map(instance => {
-                    if (instance.family.toLowerCase() === "ipv4") {
-                      return (
-                        <option key={instance.address} value={instance.address}>
-                          {instance.address} - {key}
-                        </option>
-                      );
-                    }
-                  });
-                })}
-              </StyledSelect>
+                type="text"
+                value={this.props.config.settings.workspace.server.hostname}
+                onChange={e => {
+                  this.validateChange(e);
+                }}
+              />
               {this.props.validationErrors["workspace.server.hostname"] && (
                 <p className="ValidationError">
                   Must be a valid IP address or "localhost"
@@ -198,9 +176,7 @@ class ServerScreen extends Component {
                 name="workspace.server.network_id"
                 type="text"
                 data-type="number"
-                value={this.cleanNumber(
-                  this.props.config.settings.workspace.server.network_id,
-                )}
+                value={this.props.config.settings.workspace.server.network_id}
                 onChange={this.validateChange}
               />
               {this.props.validationErrors["workspace.server.network_id"] && (
@@ -209,6 +185,23 @@ class ServerScreen extends Component {
             </div>
             <div className="RowItem">
               <p>Internal blockchain identifier of Ganache server.</p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h4>Suffix</h4>
+          <div className="Row">
+            <div className="RowItem">
+              <input
+                name="workspace.server.suffix"
+                type="text"
+                value={this.props.config.settings.workspace.server.suffix}
+                onChange={this.validateChange}
+              />
+            </div>
+            <div className="RowItem">
+              <p>Suffix for Server host:port/suffix</p>
             </div>
           </div>
         </section>
@@ -230,27 +223,6 @@ class ServerScreen extends Component {
             </div>
             <div className="RowItem">
               <p>Process transactions instantaneously.</p>
-            </div>
-          </div>
-        </section>
-
-        <section>
-          <h4>REGTEST</h4>
-          <div className="Row">
-            <div className="RowItem">
-              <div className="Switch">
-                <input
-                  type="checkbox"
-                  name="regtest"
-                  id="Regtest"
-                  onChange={this.toggleRegtest}
-                  checked={this.state.regtest}
-                />
-                <label htmlFor="Regtest">REGTEST ENABLED</label>
-              </div>
-            </div>
-            <div className="RowItem">
-              <p>Connect to non-ganache node.</p>
             </div>
           </div>
         </section>
@@ -311,8 +283,7 @@ class ServerScreen extends Component {
                   When transactions fail, throw an error. If disabled,
                   transaction failures will only be detectable via the "status"
                   flag in the transaction receipt. Disabling this feature will
-                  make Ganache handle transaction failures like other Ethereum
-                  clients.
+                  make Ganache handle transaction failures like other clients.
                 </p>
               </div>
             </div>
