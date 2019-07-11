@@ -1,8 +1,6 @@
 import { web3ActionCreator } from "../web3/helpers/Web3ActionCreator";
 const prefix = "ACCOUNTS";
 
-// const { generateAccountByCow } = require("../../../helper/generateAccount");
-
 export const GET_ACCOUNTS = `${prefix}/GET_ACCOUNTS`;
 export const getAccounts = function() {
   return async function(dispatch, getState) {

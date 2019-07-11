@@ -161,7 +161,6 @@ function startServer(options) {
         data.hdPath = data.hdPath || state.wallet_hdpath;
         data.mnemonic = data.mnemonic || state.mnemonic;
         data.privateKeys = privateKeys;
-        console.log(state.mnemonic, "state.mnemonic---------------------");
         process.send({ type: "server-started", data: data });
 
         console.log("Ganache started successfully!");
