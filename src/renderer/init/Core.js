@@ -20,7 +20,7 @@ import {
   showHomeScreen,
 } from "../../common/redux/core/actions";
 
-import { getAccounts, setAccounts } from "../../common/redux/accounts/actions";
+import { getAccounts } from "../../common/redux/accounts/actions";
 
 import {
   setSettings,
@@ -69,7 +69,7 @@ export function initCore(store) {
       store.dispatch(setRPCProviderUrl(url));
 
       store.dispatch(setBlockNumberToLatest());
-      store.dispatch(setAccounts());
+      // store.dispatch(setAccounts());
       store.dispatch(getAccounts());
       store.dispatch(getGasPrice());
       store.dispatch(getGasLimit());

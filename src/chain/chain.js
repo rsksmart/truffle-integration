@@ -3,7 +3,7 @@
 var ganacheLib = require("ganache-core");
 var logging = require("./logging");
 var pkg = require("../../package.json");
-var generateAddressesFromSeed = require("../helper/generateAccount");
+var { generateAccountByCow } = require("../helper/generateAccount");
 
 if (!process.send) {
   console.log("Not running as child process. Throwing.");
@@ -172,13 +172,11 @@ function startServer(options) {
         process.send({ type: "server-stopped" });
       });
     } else {
-      let accounts = generateAddressesFromSeed(
-        "state idle scare twist tooth crack blood pond valley lion pass acid",
-      );
+      let privateKeys = generateAccountByCow();
       let data = {};
-      data.hdPath = accounts.wallet_hdpath;
-      data.mnemonic = accounts.mnemonic;
-      data.privateKeys = accounts.accounts;
+      data.hdPath = "";
+      data.mnemonic = "";
+      data.privateKeys = privateKeys;
       process.send({ type: "server-started", data: data });
     }
   });

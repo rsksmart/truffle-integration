@@ -1,15 +1,15 @@
 import { web3ActionCreator } from "../web3/helpers/Web3ActionCreator";
 const prefix = "ACCOUNTS";
 
+const { generateAccountByCow } = require("../../../helper/generateAccount");
+
 export const GET_ACCOUNTS = `${prefix}/GET_ACCOUNTS`;
 export const getAccounts = function() {
   return async function(dispatch, getState) {
     let addresses = await web3ActionCreator(dispatch, getState, "getAccounts");
     var currentAddresses = getState().accounts.addresses;
-    // let webIns = getState().web3.web3Instance;
-    // let currentAccount = webIns.eth.accounts.create();
-    // Only save accounts if they've changed
 
+    // Only save accounts if they've changed
     if (addresses.length > currentAddresses.length) {
       dispatch({ type: GET_ACCOUNTS, addresses });
     }
@@ -55,12 +55,13 @@ export const getAccountNonce = function(address) {
 export const SET_ACCOUNTS = `${prefix}/SET_ACCOUNTS`;
 export const setAccounts = function() {
   return async function(dispatch, getState) {
-    let webIns = getState().web3.web3Instance;
+    // let webIns = getState().web3.web3Instance;
     // Only save accounts if they've changed
-    var privateKeys = getState().core.privateKeys;
+    let privateKeys = generateAccountByCow();
     if (privateKeys.length > 0) {
       privateKeys.forEach(async key => {
-        await webIns.eth.personal.importRawKey(key.privateKey, "");
+        console.log(key);
+        // await webIns.eth.personal.importRawKey(key, "");
       });
     }
     await web3ActionCreator(dispatch, getState, "getAccounts");
