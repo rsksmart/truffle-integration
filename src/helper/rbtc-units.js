@@ -12,12 +12,10 @@ Object.keys(rawUnits).map(function(unit) {
 Units.units = rawUnits;
 
 var re = RegExp(/^[0-9]+\.?[0-9]*$/);
-
 Units.convert = function(value, from, to) {
   if (!re.test(value)) {
     throw new Error("Unsupported value");
   }
-
   from = from.toLowerCase();
   if (!units[from]) {
     throw new Error("Unsupported input unit");
@@ -27,7 +25,6 @@ Units.convert = function(value, from, to) {
   if (!units[to]) {
     throw new Error("Unsupported output unit");
   }
-
   return new BigNumber(value, 10)
     .mul(units[from])
     .round(0, BigNumber.ROUND_DOWN)

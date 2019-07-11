@@ -16,7 +16,6 @@ class AccountList extends Component {
       accountAddress: "",
     };
   }
-
   showKeys = (accountAddress, privateKey) => {
     this.setState({
       showKeys: true,
@@ -68,7 +67,7 @@ class AccountList extends Component {
                   account,
                   // need to pass lower case account here because account is
                   // checksummed address
-                  self.props.privateKeys[account.toLowerCase()],
+                  self.props.privateKeys[index],
                 );
               }}
             >

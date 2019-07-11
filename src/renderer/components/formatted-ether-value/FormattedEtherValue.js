@@ -1,20 +1,18 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import RbtcUnits from "../../../helper/rbtc-units";
+import RBTCtcUnits from "../../../helper/rbtc-units";
 
 export default class FormattedEtherValue extends Component {
   render() {
-    const weiValueInEth = parseFloat(
-      RbtcUnits.convert(
-        this.props.value,
-        this.props.fromUnit,
-        this.props.toUnit,
-      ),
-    ).toFixed(2);
+    const satoshiValueInRBTC = RBTCtcUnits.convert(
+      this.props.value,
+      this.props.fromUnit,
+      this.props.toUnit,
+    );
     return (
       <span
-        title={weiValueInEth}
-      >{`${weiValueInEth} ${this.props.toUnit.toUpperCase()}`}</span>
+        title={satoshiValueInRBTC}
+      >{`${satoshiValueInRBTC} ${this.props.toUnit.toUpperCase()}`}</span>
     );
   }
 }
@@ -26,6 +24,6 @@ FormattedEtherValue.propTypes = {
 };
 
 FormattedEtherValue.defaultProps = {
-  fromUnit: "wei",
-  toUnit: "eth",
+  fromUnit: "sat",
+  toUnit: "rbtc",
 };

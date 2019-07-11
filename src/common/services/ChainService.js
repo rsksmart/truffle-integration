@@ -129,9 +129,9 @@ class ChainService extends EventEmitter {
     // clone to avoid mutating the settings object in case it's sent elsewhere
     let options = cloneDeep(settings.server);
 
-    if (settings.randomizeMnemonicOnStart) {
-      delete options.mnemonic;
-    }
+    // if (settings.randomizeMnemonicOnStart) {
+    //   delete options.mnemonic;
+    // }
 
     options.logDirectory = settings.logDirectory;
 

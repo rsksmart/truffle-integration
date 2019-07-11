@@ -3,6 +3,7 @@
 var ganacheLib = require("ganache-core");
 var logging = require("./logging");
 var pkg = require("../../package.json");
+var { generateAccountByCow } = require("../helper/generateAccount");
 
 if (!process.send) {
   console.log("Not running as child process. Throwing.");
@@ -160,7 +161,6 @@ function startServer(options) {
         data.hdPath = data.hdPath || state.wallet_hdpath;
         data.mnemonic = data.mnemonic || state.mnemonic;
         data.privateKeys = privateKeys;
-
         process.send({ type: "server-started", data: data });
 
         console.log("Ganache started successfully!");
@@ -170,13 +170,14 @@ function startServer(options) {
       server.on("close", function() {
         process.send({ type: "server-stopped" });
       });
-  } else {
+    } else {
+      let privateKeys = generateAccountByCow();
       let data = {};
       data.hdPath = "";
       data.mnemonic = "";
-      data.privateKeys = "";
+      data.privateKeys = privateKeys;
       process.send({ type: "server-started", data: data });
-  }
+    }
   });
 }
 

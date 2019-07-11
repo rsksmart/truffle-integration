@@ -1,5 +1,4 @@
 import { web3ActionCreator } from "../web3/helpers/Web3ActionCreator";
-
 const prefix = "ACCOUNTS";
 
 export const GET_ACCOUNTS = `${prefix}/GET_ACCOUNTS`;
@@ -7,12 +6,10 @@ export const getAccounts = function() {
   return async function(dispatch, getState) {
     let addresses = await web3ActionCreator(dispatch, getState, "getAccounts");
     var currentAddresses = getState().accounts.addresses;
-
     // Only save accounts if they've changed
     if (addresses.length > currentAddresses.length) {
       dispatch({ type: GET_ACCOUNTS, addresses });
     }
-
     addresses.forEach(address => {
       dispatch(getAccountBalance(address));
       dispatch(getAccountNonce(address));
@@ -49,5 +46,22 @@ export const getAccountNonce = function(address) {
     if (nonce != currentNonce) {
       dispatch({ type: GET_ACCOUNT_NONCE, address, nonce });
     }
+  };
+};
+
+export const SET_ACCOUNTS = `${prefix}/SET_ACCOUNTS`;
+export const setAccounts = function() {
+  return async function(dispatch, getState) {
+    let webIns = getState().web3.web3Instance;
+    webIns.eth.accounts.wallet.clear();
+    // Only save accounts if they've changed
+    // generateAccountByCow();
+    // if (privateKeys.length > 0) {
+    //   privateKeys.forEach(async key => {
+    //     console.log(key);
+    //     // await webIns.eth.personal.importRawKey(key, "");
+    //   });
+    // }
+    await web3ActionCreator(dispatch, getState, "getAccounts");
   };
 };
