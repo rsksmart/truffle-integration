@@ -12,8 +12,9 @@ const initialSettings = {
   logsDirectory: null,
   server: {
     hostname: "127.0.0.1",
-    port: 7545,
-    network_id: 5777,
+    port: 4445,
+    network_id: 7771,
+    suffix: "websocket",
     default_balance_ether: 100,
     total_accounts: 10,
     unlocked_accounts: [],
@@ -26,13 +27,6 @@ const initialSettings = {
     hardfork: "petersburg",
   },
   projects: [],
-  regtest: {
-    name: "RSK Regtest",
-    hostname: "127.0.0.1",
-    port: 4445,
-    network_id: 7771,
-    suffix: "/websocket",
-  },
 };
 
 class WorkspaceSettings extends Settings {
