@@ -14,7 +14,7 @@ const initialSettings = {
     hostname: "127.0.0.1",
     port: 4445,
     network_id: 7771,
-    suffix: "/websocket",
+    suffix: "websocket",
     default_balance_ether: 100,
     total_accounts: 10,
     unlocked_accounts: [],
