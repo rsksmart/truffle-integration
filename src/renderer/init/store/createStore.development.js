@@ -4,39 +4,28 @@ import { hashHistory } from "react-router";
 import { routerMiddleware, push } from "react-router-redux";
 import createLogger from "redux-logger";
 
-import {
-  RPC_REQUEST_STARTED,
-  RPC_REQUEST_SUCCEEDED,
-} from "../../../common/redux/web3/helpers/ReduxWeb3Provider";
-
-import { ADD_LOG_LINES } from "../../../common/redux/logs/actions";
-
-import { SET_SCROLL_POSITION } from "../../../common/redux/appshell/actions";
-
-import { CACHE_REQUEST } from "../../../common/redux/request-cache/actions";
-
 const actionCreators = {
   push,
 };
 
-const actionsToIgnoreInConsoleLogger = [
-  "APP/BLOCKCHAINSTATE",
-  "app/markRequestPending",
-  "app/markRequestSuccess",
-  "APP/REPLSTATE",
-  "APP/REPLSTATE",
-  RPC_REQUEST_STARTED,
-  RPC_REQUEST_SUCCEEDED,
-  ADD_LOG_LINES,
-  SET_SCROLL_POSITION,
-  CACHE_REQUEST,
-];
+// const actionsToIgnoreInConsoleLogger = [
+//   "APP/BLOCKCHAINSTATE",
+//   "app/markRequestPending",
+//   "app/markRequestSuccess",
+//   "APP/REPLSTATE",
+//   "APP/REPLSTATE",
+//   RPC_REQUEST_STARTED,
+//   RPC_REQUEST_SUCCEEDED,
+//   ADD_LOG_LINES,
+//   SET_SCROLL_POSITION,
+//   CACHE_REQUEST,
+// ];
 
 const logger = createLogger({
   level: "info",
   collapsed: true,
-  predicate: (getState, action) => {
-    return actionsToIgnoreInConsoleLogger.indexOf(action.type) === -1;
+  predicate: () => {
+    return false;
   },
 });
 
