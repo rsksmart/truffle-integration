@@ -21,7 +21,6 @@ Units.convert = function(value, from, to) {
     throw new Error("Unsupported input unit");
   }
 
-  to = to.toLowerCase();
   if (!units[to]) {
     throw new Error("Unsupported output unit");
   }

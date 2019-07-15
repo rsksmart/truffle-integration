@@ -4,15 +4,17 @@ import RBTCtcUnits from "../../../helper/rbtc-units";
 
 export default class FormattedEtherValue extends Component {
   render() {
-    const satoshiValueInRBTC = RBTCtcUnits.convert(
-      this.props.value,
-      this.props.fromUnit,
-      this.props.toUnit,
-    );
+    const weiValueInRBTC = parseFloat(
+      RBTCtcUnits.convert(
+        this.props.value,
+        this.props.fromUnit,
+        this.props.toUnit,
+      ),
+    ).toFixed(2);
     return (
       <span
-        title={satoshiValueInRBTC}
-      >{`${satoshiValueInRBTC} ${this.props.toUnit.toUpperCase()}`}</span>
+        title={weiValueInRBTC}
+      >{`${weiValueInRBTC} ${this.props.toUnit}`}</span>
     );
   }
 }
@@ -24,6 +26,6 @@ FormattedEtherValue.propTypes = {
 };
 
 FormattedEtherValue.defaultProps = {
-  fromUnit: "sat",
-  toUnit: "rbtc",
+  fromUnit: "wei",
+  toUnit: "rBTC",
 };

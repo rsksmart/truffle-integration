@@ -3,7 +3,6 @@ import thunk from "redux-thunk";
 import { hashHistory } from "react-router";
 import { routerMiddleware, push } from "react-router-redux";
 import createLogger from "redux-logger";
-
 import {
   RPC_REQUEST_STARTED,
   RPC_REQUEST_SUCCEEDED,
@@ -14,7 +13,6 @@ import { ADD_LOG_LINES } from "../../../common/redux/logs/actions";
 import { SET_SCROLL_POSITION } from "../../../common/redux/appshell/actions";
 
 import { CACHE_REQUEST } from "../../../common/redux/request-cache/actions";
-
 const actionCreators = {
   push,
 };
@@ -30,6 +28,7 @@ const actionsToIgnoreInConsoleLogger = [
   ADD_LOG_LINES,
   SET_SCROLL_POSITION,
   CACHE_REQUEST,
+  "CORE/SET_BLOCK_NUMBER", // prevent crash due to lots of logs
 ];
 
 const logger = createLogger({

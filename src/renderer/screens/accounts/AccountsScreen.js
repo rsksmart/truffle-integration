@@ -2,7 +2,6 @@ import React, { Component } from "react";
 
 import connect from "../helpers/connect";
 
-import MnemonicAndHdPath from "./MnemonicAndHdPath";
 import AccountList from "./AccountList";
 
 class AccountsScreen extends Component {
@@ -16,12 +15,6 @@ class AccountsScreen extends Component {
     return (
       <div className="AccountsScreen">
         <main>
-          <div className="Mnemonic">
-            <MnemonicAndHdPath
-              mnemonic={this.props.core.mnemonic}
-              hdPath={this.props.core.hdPath}
-            />
-          </div>
           <AccountList
             accounts={this.props.accounts.addresses}
             balances={this.props.accounts.balances}
