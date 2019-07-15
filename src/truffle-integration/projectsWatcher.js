@@ -57,22 +57,24 @@ class ProjectsWatcher extends EventEmitter {
       }
     });
 
-    this.logsSubscription = this.web3.eth.subscribe(
-      "logs",
-      {
-        fromBlock: null,
-        topics: null,
-      },
-      error => {
-        if (error) {
-          throw error;
-        }
-      },
-    );
+    // RSKJ does not support log subscription
 
-    this.logsSubscription.on("data", async log => {
-      await this.handleLog(log);
-    });
+    // this.logsSubscription = this.web3.eth.subscribe(
+    //   "logs",
+    //   {
+    //     fromBlock: null,
+    //     topics: null,
+    //   },
+    //   error => {
+    //     if (error) {
+    //       throw error;
+    //     }
+    //   },
+    // );
+
+    // this.logsSubscription.on("data", async log => {
+    //   await this.handleLog(log);
+    // });
 
     await this.validateContractsOnChain();
   }

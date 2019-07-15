@@ -246,8 +246,8 @@ app.on("ready", () => {
       },
     );
 
-    ipcMain.on("web3-provider", () => {
-      // truffleIntegration.setWeb3(url);
+    ipcMain.on("web3-provider", (event, url) => {
+      truffleIntegration.setWeb3(url);
     });
 
     truffleIntegration.start();
