@@ -28,7 +28,16 @@ const actionsToIgnoreInConsoleLogger = [
   ADD_LOG_LINES,
   SET_SCROLL_POSITION,
   CACHE_REQUEST,
-  "CORE/SET_BLOCK_NUMBER", // prevent crash due to lots of logs
+
+  // prevent crash due to lots of logss
+  "BLOCKS/SET_BLOCKS_REQUESTED",
+  "TRANSACTIONS/ADD_RECEIPTS",
+  "BLOCKS/ADD_BLOCKS_TO_VIEW",
+  "TRANSACTIONS/SET_LOADING",
+  "TRANSACTIONS/ADD_TRANSACTIONS_TO_VIEW",
+  "TRANSACTIONS/SET_BLOCK_REQUESTED",
+  "CORE/SET_BLOCK_NUMBER",
+  "ACCOUNTS/GET_ACCOUNTS",
 ];
 
 const logger = createLogger({
