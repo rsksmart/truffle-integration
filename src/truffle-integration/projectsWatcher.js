@@ -14,6 +14,7 @@ class ProjectsWatcher extends EventEmitter {
     this.projects = [];
     this.blocksReceived = [];
     this.subscribedTopics = [];
+    this.currentBlockNumber = -1;
   }
 
   close() {
@@ -54,6 +55,7 @@ class ProjectsWatcher extends EventEmitter {
       if (this.blocksReceived.indexOf(block.number) === -1) {
         this.blocksReceived.push(block.number);
         await this.handleBlock(block);
+        this.fetchLogsToCurrentBlock(block.number);
       }
     });
 
@@ -77,6 +79,28 @@ class ProjectsWatcher extends EventEmitter {
     // });
 
     await this.validateContractsOnChain();
+  }
+
+  fetchLogsToCurrentBlock(blockNumber) {
+    // console.log('fetchLogsToCurrentBLock', this.currentBlockNumber, blockNumber)
+    if (this.currentBlockNumber < 0 && blockNumber > 0) {
+      this.currentBlockNumber = blockNumber;
+      return;
+    }
+    if (this.currentBlockNumber == blockNumber) {
+      return;
+    }
+    this.web3.eth
+      .getPastLogs({
+        fromBlock: this.currentBlockNumber,
+      })
+      .then(logs => {
+        // console.log('fetchLogsToCurrentBLock logs length ',logs.length)
+        logs.forEach(log => {
+          this.handleLog(log);
+        });
+        this.currentBlockNumber = blockNumber;
+      });
   }
 
   async validateContractsOnChain() {
@@ -124,6 +148,7 @@ class ProjectsWatcher extends EventEmitter {
         );
       });
       topics = topics.concat(abiEvents.map(event => event.signature));
+      // console.log('subscribeToEvents', abiEvents);
     }
     this.subscribedTopics = this.subscribedTopics.concat(topics);
   }
@@ -222,6 +247,8 @@ class ProjectsWatcher extends EventEmitter {
 
   handleLog(log) {
     for (let i = 0; i < log.topics.length; i++) {
+      // console.log('subscribedTopics', this.subscribedTopics)
+      // console.log('topic '+i, log.topics[i]);
       if (this.subscribedTopics.indexOf(log.topics[i]) >= 0) {
         this.emit("contract-event", {
           contractAddress: log.address,
