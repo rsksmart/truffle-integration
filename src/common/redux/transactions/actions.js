@@ -10,6 +10,14 @@ import { GET_DECODED_EVENT } from "../events/actions";
 const prefix = "TRANSACTIONS";
 const PAGE_SIZE = 10;
 
+// Ignore transactions to below to address to avoid them from flooding Transactions tab
+// 0x1000006 is bridge, a native RSK smart contract to issue equal amount of rBTC to BTC locked
+// 0x1000008 is REMASC, a native RSK smart contract used to reward mining
+const ignoreTxToAddresses = [
+  "0x0000000000000000000000000000000001000006",
+  "0x0000000000000000000000000000000001000008",
+];
+
 export const CLEAR_TRANSACTIONS_IN_VIEW = `${prefix}/CLEAR_TRANSACTIONS_IN_VIEW`;
 export const clearTransactionsInView = function() {
   return { type: CLEAR_TRANSACTIONS_IN_VIEW, transactions: [] };
@@ -68,8 +76,7 @@ export const getReceipts = async function(transactions, web3Instance) {
     }),
   );
 };
-const ignoreAddress_1 = "0x0000000000000000000000000000000001000006";
-const ignoreAddress_2 = "0x0000000000000000000000000000000001000008";
+
 export const SET_BLOCK_REQUESTED = `${prefix}/SET_BLOCK_REQUESTED`;
 export const ADD_TRANSACTIONS_TO_VIEW = `${prefix}/ADD_TRANSACTIONS_TO_VIEW`;
 export const getTransactionsForBlocks = function(
@@ -101,17 +108,19 @@ export const getTransactionsForBlocks = function(
       // Now request the block and receipts for all its transactions
       let block = await web3Request("getBlock", [number, true], web3Instance);
 
-      let cleanTransactions = block.transactions.filter(item => {
-        return item.to !== ignoreAddress_1 && item.to !== ignoreAddress_2;
+      const filteredBlockTx = block.transactions.filter(item => {
+        return ignoreTxToAddresses.indexOf(item.to) < 0;
       });
-      if (cleanTransactions.length == 0) {
+
+      if (filteredBlockTx.length === 0) {
         continue;
       }
 
       receipts = receipts.concat(
-        await getReceipts(cleanTransactions, web3Instance),
+        await getReceipts(filteredBlockTx, web3Instance),
       );
-      transactions = transactions.concat(cleanTransactions);
+
+      transactions = transactions.concat(filteredBlockTx);
     }
 
     if (receipts.length > 0) {
