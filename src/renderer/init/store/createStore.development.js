@@ -28,7 +28,6 @@ const actionsToIgnoreInConsoleLogger = [
   ADD_LOG_LINES,
   SET_SCROLL_POSITION,
   CACHE_REQUEST,
-  "CORE/SET_BLOCK_NUMBER", // prevent crash due to lots of logs
 ];
 
 const logger = createLogger({

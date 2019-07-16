@@ -10,6 +10,14 @@ import { GET_DECODED_EVENT } from "../events/actions";
 const prefix = "TRANSACTIONS";
 const PAGE_SIZE = 10;
 
+// Ignore transactions to below to address to avoid them from flooding Transactions tab
+// 0x1000006 is bridge, a native RSK smart contract to issue equal amount of rBTC to BTC locked
+// 0x1000008 is REMASC, a native RSK smart contract used to reward mining
+const ignoreTxToAddresses = [
+  "0x0000000000000000000000000000000001000006",
+  "0x0000000000000000000000000000000001000008",
+];
+
 export const CLEAR_TRANSACTIONS_IN_VIEW = `${prefix}/CLEAR_TRANSACTIONS_IN_VIEW`;
 export const clearTransactionsInView = function() {
   return { type: CLEAR_TRANSACTIONS_IN_VIEW, transactions: [] };
@@ -100,14 +108,19 @@ export const getTransactionsForBlocks = function(
       // Now request the block and receipts for all its transactions
       let block = await web3Request("getBlock", [number, true], web3Instance);
 
-      if (block.transactions.length == 0) {
+      const filteredBlockTx = block.transactions.filter(item => {
+        return ignoreTxToAddresses.indexOf(item.to) < 0;
+      });
+
+      if (filteredBlockTx.length === 0) {
         continue;
       }
 
       receipts = receipts.concat(
-        await getReceipts(block.transactions, web3Instance),
+        await getReceipts(filteredBlockTx, web3Instance),
       );
-      transactions = transactions.concat(block.transactions);
+
+      transactions = transactions.concat(filteredBlockTx);
     }
 
     if (receipts.length > 0) {
