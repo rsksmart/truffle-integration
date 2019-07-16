@@ -68,7 +68,8 @@ export const getReceipts = async function(transactions, web3Instance) {
     }),
   );
 };
-
+const ignoreAddress_1 = "0x0000000000000000000000000000000001000006";
+const ignoreAddress_2 = "0x0000000000000000000000000000000001000008";
 export const SET_BLOCK_REQUESTED = `${prefix}/SET_BLOCK_REQUESTED`;
 export const ADD_TRANSACTIONS_TO_VIEW = `${prefix}/ADD_TRANSACTIONS_TO_VIEW`;
 export const getTransactionsForBlocks = function(
@@ -100,14 +101,17 @@ export const getTransactionsForBlocks = function(
       // Now request the block and receipts for all its transactions
       let block = await web3Request("getBlock", [number, true], web3Instance);
 
-      if (block.transactions.length == 0) {
+      let cleanTransactions = block.transactions.filter(item => {
+        return item.to !== ignoreAddress_1 && item.to !== ignoreAddress_2;
+      });
+      if (cleanTransactions.length == 0) {
         continue;
       }
 
       receipts = receipts.concat(
-        await getReceipts(block.transactions, web3Instance),
+        await getReceipts(cleanTransactions, web3Instance),
       );
-      transactions = transactions.concat(block.transactions);
+      transactions = transactions.concat(cleanTransactions);
     }
 
     if (receipts.length > 0) {
