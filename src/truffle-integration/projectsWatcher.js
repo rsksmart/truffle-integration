@@ -14,7 +14,7 @@ class ProjectsWatcher extends EventEmitter {
     this.projects = [];
     this.blocksReceived = [];
     this.subscribedTopics = [];
-    this.currentBlockNumber = -1;
+    this.fromBlockHeight = -1;
   }
 
   close() {
@@ -55,7 +55,7 @@ class ProjectsWatcher extends EventEmitter {
       if (this.blocksReceived.indexOf(block.number) === -1) {
         this.blocksReceived.push(block.number);
         await this.handleBlock(block);
-        this.fetchLogsToCurrentBlock(block.number);
+        await this.fetchLogsToBlock(block.number);
       }
     });
 
@@ -81,25 +81,29 @@ class ProjectsWatcher extends EventEmitter {
     await this.validateContractsOnChain();
   }
 
-  fetchLogsToCurrentBlock(blockNumber) {
-    // console.log('fetchLogsToCurrentBLock', this.currentBlockNumber, blockNumber)
-    if (this.currentBlockNumber < 0 && blockNumber > 0) {
-      this.currentBlockNumber = blockNumber;
+  /**
+   * Fetch logs from last time to blockNumber to new to blockNumber
+   * @param {number} blockNumber
+   */
+  fetchLogsToBlock(blockNumber) {
+    // Skip if new block height is not greater than from block height
+    // Meaning current block has already been queried
+    if (this.fromBlockHeight >= blockNumber) {
       return;
     }
-    if (this.currentBlockNumber == blockNumber) {
-      return;
-    }
-    this.web3.eth
+
+    return this.web3.eth
       .getPastLogs({
-        fromBlock: this.currentBlockNumber,
+        fromBlock: this.fromBlockHeight,
+        toBlock: blockNumber,
       })
       .then(logs => {
-        // console.log('fetchLogsToCurrentBLock logs length ',logs.length)
-        logs.forEach(log => {
-          this.handleLog(log);
+        logs.forEach(async log => {
+          await this.handleLog(log);
         });
-        this.currentBlockNumber = blockNumber;
+
+        // Set from block height to be the same as block number
+        this.fromBlockHeight = blockNumber;
       });
   }
 
@@ -148,7 +152,6 @@ class ProjectsWatcher extends EventEmitter {
         );
       });
       topics = topics.concat(abiEvents.map(event => event.signature));
-      // console.log('subscribeToEvents', abiEvents);
     }
     this.subscribedTopics = this.subscribedTopics.concat(topics);
   }
@@ -245,10 +248,12 @@ class ProjectsWatcher extends EventEmitter {
     }
   }
 
+  /**
+   * Iterate through contract topics in log and emit "contract-event" when topic is in subscribed topics
+   * @param {object} log object
+   */
   handleLog(log) {
     for (let i = 0; i < log.topics.length; i++) {
-      // console.log('subscribedTopics', this.subscribedTopics)
-      // console.log('topic '+i, log.topics[i]);
       if (this.subscribedTopics.indexOf(log.topics[i]) >= 0) {
         this.emit("contract-event", {
           contractAddress: log.address,
