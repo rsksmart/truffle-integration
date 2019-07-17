@@ -5,6 +5,8 @@ ganache/test/mocha/workspaces/test-workspaces/default/ContractCache
 ganache/test/mocha/workspaces/test-workspaces/workspaces/Test-1/ContractCache
 ganache/test/mocha/workspaces/test-workspaces/workspaces/Test-2/ContractCache
 
+truffle/build
+
 .vscode
 .node_modules_git
 

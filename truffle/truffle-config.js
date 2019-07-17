@@ -41,7 +41,7 @@ module.exports = {
       provider: new PrivateKeyProvider(privateKey, "http://127.0.0.1:4444"),
       host: "127.0.0.1",
       port: 4444,
-      network_id: "*"
+      network_id: 33,
     }
   },
   // Configure your compilers
