@@ -55,7 +55,7 @@ class ProjectsWatcher extends EventEmitter {
       if (this.blocksReceived.indexOf(block.number) === -1) {
         this.blocksReceived.push(block.number);
         await this.handleBlock(block);
-        this.fetchLogsToCurrentBlock(block.number);
+        await this.fetchLogsToCurrentBlock(block.number);
       }
     });
 
@@ -81,8 +81,7 @@ class ProjectsWatcher extends EventEmitter {
     await this.validateContractsOnChain();
   }
 
-  fetchLogsToCurrentBlock(blockNumber) {
-    // console.log('fetchLogsToCurrentBLock', this.currentBlockNumber, blockNumber)
+  async fetchLogsToCurrentBlock(blockNumber) {
     if (this.currentBlockNumber < 0 && blockNumber > 0) {
       this.currentBlockNumber = blockNumber;
       return;
@@ -90,17 +89,13 @@ class ProjectsWatcher extends EventEmitter {
     if (this.currentBlockNumber == blockNumber) {
       return;
     }
-    this.web3.eth
-      .getPastLogs({
-        fromBlock: this.currentBlockNumber,
-      })
-      .then(logs => {
-        // console.log('fetchLogsToCurrentBLock logs length ',logs.length)
-        logs.forEach(log => {
-          this.handleLog(log);
-        });
-        this.currentBlockNumber = blockNumber;
-      });
+    let logs = await this.web3.eth.getPastLogs({
+      fromBlock: this.currentBlockNumber,
+    });
+    logs.forEach(log => {
+      this.handleLog(log);
+    });
+    this.currentBlockNumber = blockNumber;
   }
 
   async validateContractsOnChain() {
@@ -141,14 +136,15 @@ class ProjectsWatcher extends EventEmitter {
     let topics = [];
     for (let i = 0; i < project.contracts.length; i++) {
       const contract = project.contracts[i];
-      const abiEvents = contract.abi.filter(entry => {
-        return (
-          entry.type === "event" &&
-          this.subscribedTopics.indexOf(entry.signature) === -1
-        );
-      });
-      topics = topics.concat(abiEvents.map(event => event.signature));
-      // console.log('subscribeToEvents', abiEvents);
+      if (contract.events) {
+        const events = contract.events.filter(entry => {
+          return (
+            entry.type === "event" &&
+            this.subscribedTopics.indexOf(entry.signature) === -1
+          );
+        });
+        topics = topics.concat(events.map(event => event.signature));
+      }
     }
     this.subscribedTopics = this.subscribedTopics.concat(topics);
   }
@@ -247,8 +243,6 @@ class ProjectsWatcher extends EventEmitter {
 
   handleLog(log) {
     for (let i = 0; i < log.topics.length; i++) {
-      // console.log('subscribedTopics', this.subscribedTopics)
-      // console.log('topic '+i, log.topics[i]);
       if (this.subscribedTopics.indexOf(log.topics[i]) >= 0) {
         this.emit("contract-event", {
           contractAddress: log.address,
