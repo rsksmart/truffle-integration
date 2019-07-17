@@ -23,6 +23,7 @@ const actionsToIgnoreInConsoleLogger = [
   "app/markRequestSuccess",
   "APP/REPLSTATE",
   "APP/REPLSTATE",
+  "CORE/SET_BLOCK_NUMBER",  // Ignore block number setting due to high volume
   RPC_REQUEST_STARTED,
   RPC_REQUEST_SUCCEEDED,
   ADD_LOG_LINES,
