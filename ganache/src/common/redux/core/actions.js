@@ -1,7 +1,5 @@
 import { push } from "react-router-redux";
 import { ipcRenderer } from "electron";
-const Web3 = require("web3");
-const WsProvider = require("web3-providers-ws");
 
 import {
   web3CleanUpHelper,
