@@ -154,7 +154,7 @@ class ChainScreen extends Component {
               </StyledSelect>
             </div>
             <div className="RowItem">
-              <p>The hardfork to use. Default is Petersburg.</p>
+              <p>The hardfork to use. Default is Byzantium.</p>
             </div>
           </div>
         </section>
