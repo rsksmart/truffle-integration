@@ -544,7 +544,7 @@ app.on("ready", () => {
 
       // TODO: We should iternate project names when adding new and append number suffix such as RSK-regtest-02
       // Right now the name is hard-coded
-      const workspaceName = "RSK-regtest";
+      const workspaceName = moniker.choose();
       const wallet = new ethagen({ entropyBits: 128 });
       defaultWorkspace.saveAs(
         workspaceName,
@@ -634,6 +634,7 @@ app.on("ready", () => {
           SET_WORKSPACES,
           workspaceManager.getNonDefaultNames(),
         );
+
         mainWindow.webContents.send(
           SET_CURRENT_WORKSPACE,
           tempWorkspace,
