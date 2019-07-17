@@ -2,7 +2,7 @@
   "name": "rsk-ganache",
   "version": "1.0.0",
   "description": "Ganache GUI and Docker deployment for RSK regtest",
-  "main": "./ganache/src/init.js",
+  "main": "",
   "scripts": {
     "postinstall": "(cd ganache && npm install); (cd truffle && npm install)"
   },
