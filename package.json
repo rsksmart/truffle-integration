@@ -2,9 +2,9 @@
   "name": "rsk-ganache",
   "version": "1.0.0",
   "description": "Ganache GUI and Docker deployment for RSK regtest",
-  "main": ".eslintrc.js",
+  "main": "./ganache/src/init.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postinstall": "(cd ganache && npm install); (cd truffle && npm install)"
   },
   "repository": {
     "type": "git",
