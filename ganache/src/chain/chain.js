@@ -3,7 +3,6 @@
 var ganacheLib = require("ganache-core");
 var logging = require("./logging");
 var pkg = require("../../package.json");
-var { generateAccountByCow } = require("../helper/generateAccount");
 
 if (!process.send) {
   console.log("Not running as child process. Throwing.");

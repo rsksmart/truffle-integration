@@ -48,20 +48,3 @@ export const getAccountNonce = function(address) {
     }
   };
 };
-
-export const SET_ACCOUNTS = `${prefix}/SET_ACCOUNTS`;
-export const setAccounts = function() {
-  return async function(dispatch, getState) {
-    let webIns = getState().web3.web3Instance;
-    webIns.eth.accounts.wallet.clear();
-    // Only save accounts if they've changed
-    // generateAccountByCow();
-    // if (privateKeys.length > 0) {
-    //   privateKeys.forEach(async key => {
-    //     console.log(key);
-    //     // await webIns.eth.personal.importRawKey(key, "");
-    //   });
-    // }
-    await web3ActionCreator(dispatch, getState, "getAccounts");
-  };
-};
