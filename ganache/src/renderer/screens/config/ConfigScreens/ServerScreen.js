@@ -206,7 +206,7 @@ class ServerScreen extends Component {
         </section>
 
         <section>
-          <h4>AUTOMINE</h4>
+          <h4>AUTOMINE(LOCKED)</h4>
           <div className="Row">
             <div className="RowItem">
               <div className="Switch">
@@ -216,12 +216,13 @@ class ServerScreen extends Component {
                   id="Automine"
                   onChange={this.toggleAutomine}
                   checked={this.state.automine}
+                  disabled
                 />
                 <label htmlFor="Automine">AUTOMINE ENABLED</label>
               </div>
             </div>
             <div className="RowItem">
-              <p>Process transactions instantaneously.</p>
+              <p>Process transactions instantaneously; always enabled for RSK.</p>
             </div>
           </div>
         </section>
