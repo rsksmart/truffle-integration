@@ -41,10 +41,12 @@ export function initCore(store) {
       // Ensure web3 is set
       // 0.0.0.0 doesn't work the same as it does on other platforms, so we need to replace it
       // with localhost. Note: we don't want to update the _stored_ hostname, as 0.0.0.0 a valid concept.
+      const regex = /0.0.0.0|127.0.0.1/g
       const hostname = workspaceSettings.server.hostname.replace(
-        "0.0.0.0",
+        regex,
         "localhost",
       );
+      
       const url = `ws://${hostname}:${workspaceSettings.server.port}/${workspaceSettings.server.suffix}`;
 
       console.log("hostname", hostname);

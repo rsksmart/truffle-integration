@@ -110,32 +110,18 @@ export const setBlockNumber = function(number) {
 export const GET_BLOCK_SUBSCRIPTION = `${prefix}/GET_BLOCK_SUBSCRIPTION`;
 export const getBlockSubscription = function() {
   return async function(dispatch, getState) {
-    let blockHeaderSubscription = null;
+    let subscription = await web3ActionCreator(
+      dispatch,
+      getState,
+      "subscribe",
+      ["newBlockHeaders"],
+    );
 
-    let workspaceServerConfig = getState().config.settings.workspace.server;
-    const url = `ws://${workspaceServerConfig.hostname}:${workspaceServerConfig.port}/${workspaceServerConfig.suffix}`;
-    let web3 = await new Web3(new WsProvider(url));
-    blockHeaderSubscription = web3.eth.subscribe("newBlockHeaders", error => {
-      if (error) {
-        throw error;
-      }
-    });
+    subscription.on("data", blockHeader => {
+      let currentBlockNumber = getState().core.latestBlock;
 
-    let subscriptionProvider = await blockHeaderSubscription.options
-      .requestManager.provider;
-    let subscriptionConnection =
-      (await subscriptionProvider.connection) ||
-      subscriptionProvider.provider.connection;
-    blockHeaderSubscription.on("data", async block => {
-      let web3Instance = await getState().web3.web3Instance;
-      if (web3Instance == null) return;
-      let stateUrl = await web3Instance.currentProvider.provider.connection.url;
-      if (stateUrl == subscriptionConnection.url) {
-        let currentBlockNumber = getState().core.latestBlock;
-
-        if (block.number != currentBlockNumber) {
-          dispatch(setBlockNumber(block.number));
-        }
+      if (blockHeader.number != currentBlockNumber) {
+        dispatch(setBlockNumber(blockHeader.number));
       }
     });
   };

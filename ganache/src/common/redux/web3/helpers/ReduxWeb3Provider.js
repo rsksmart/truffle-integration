@@ -30,11 +30,6 @@ class ReduxWeb3Provider extends EventEmitter {
       return;
     }
 
-    // Mark payload as an internal request
-    // Slightly hacky; our chain won't log internal requests.
-    // See chain.js.
-    payload.internal = true;
-
     this.dispatch(RPCRequestStarted(payload));
 
     this.provider.send(payload, (err, response) => {
