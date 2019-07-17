@@ -35,6 +35,10 @@ class Queue {
     return this.elements[this.elements.length - 1];
   }
 
+  head() {
+    return this.elements[0];
+  }
+
   size() {
     return this.elements.length;
   }
