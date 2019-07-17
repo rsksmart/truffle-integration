@@ -24,6 +24,8 @@ const actionsToIgnoreInConsoleLogger = [
   "APP/REPLSTATE",
   "APP/REPLSTATE",
   "CORE/SET_BLOCK_NUMBER",  // Ignore block number setting due to high volume
+  "BLOCKS/ADD_BLOCKS_TO_VIEW",
+  "BLOCKS/SET_BLOCKS_REQUESTED",
   RPC_REQUEST_STARTED,
   RPC_REQUEST_SUCCEEDED,
   ADD_LOG_LINES,
