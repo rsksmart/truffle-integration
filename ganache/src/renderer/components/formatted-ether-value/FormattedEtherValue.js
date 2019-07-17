@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import RBTCtcUnits from "../../../helper/rbtc-units";
+import RBTCtcUnits from "../../../helpers/rbtc-units";
 
 export default class FormattedEtherValue extends Component {
   render() {
