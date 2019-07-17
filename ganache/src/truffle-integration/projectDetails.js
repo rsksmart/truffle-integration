@@ -12,6 +12,7 @@ const noNodeErrorMessage =
 async function getNodeVersionFromShell(shell, nvmDir) {
   try {
     const nvmPath = path.join(nvmDir, "nvm.sh");
+
     const nodeVersion = await exec(
       `unset npm_config_prefix && source ${nvmPath} && nvm_resolve_local_alias default`,
       {
@@ -43,13 +44,28 @@ async function attemptRetry(projectFile) {
     nodeVersion = await getNodeVersionFromShell(shellLocations[i], nvmDir);
   }
 
+  // For nvm insatlled via brew, it is not located at ~/.nvm/nvm.sh; therefore getNodeVersionFromShell() above with find nothing.
+  // Now we are trying to find the first folder under ~/.nvm/versions/node
+  if (!nodeVersion) {
+    const nvmNodeDir = path.join(nvmDir, "versions", "node");
+    const filenames = fs.readdirSync(nvmNodeDir);
+
+    filenames.forEach(function (name) {
+      if (name.indexOf('v')===0) {
+        nodeVersion = name;
+      }
+    });
+  }
+
   // if we still don't have a node version we're SOL
   if (!nodeVersion) {
     throw new Error(noNodeErrorMessage);
   }
 
   // now fix up the PATH to include our user's node dir
+
   const nodeDir = path.join(nvmDir, "versions", "node", nodeVersion, "bin");
+
   process.env.PATH = nodeDir + path.delimiter + (process.env.PATH || "");
   process.env.NVM_DIR = nvmDir;
 
