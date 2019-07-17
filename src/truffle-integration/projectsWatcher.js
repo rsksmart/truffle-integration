@@ -14,6 +14,7 @@ class ProjectsWatcher extends EventEmitter {
     this.projects = [];
     this.blocksReceived = [];
     this.subscribedTopics = [];
+    this.fromBlockHeight = -1;
   }
 
   close() {
@@ -54,6 +55,7 @@ class ProjectsWatcher extends EventEmitter {
       if (this.blocksReceived.indexOf(block.number) === -1) {
         this.blocksReceived.push(block.number);
         await this.handleBlock(block);
+        await this.fetchLogsToBlock(block.number);
       }
     });
 
@@ -77,6 +79,32 @@ class ProjectsWatcher extends EventEmitter {
     // });
 
     await this.validateContractsOnChain();
+  }
+
+  /**
+   * Fetch logs from last time to blockNumber to new to blockNumber
+   * @param {number} blockNumber
+   */
+  fetchLogsToBlock(blockNumber) {
+    // Skip if new block height is not greater than from block height
+    // Meaning current block has already been queried
+    if (this.fromBlockHeight >= blockNumber) {
+      return;
+    }
+
+    return this.web3.eth
+      .getPastLogs({
+        fromBlock: this.fromBlockHeight,
+        toBlock: blockNumber,
+      })
+      .then(logs => {
+        logs.forEach(async log => {
+          await this.handleLog(log);
+        });
+
+        // Set from block height to be the same as block number
+        this.fromBlockHeight = blockNumber;
+      });
   }
 
   async validateContractsOnChain() {
@@ -220,6 +248,10 @@ class ProjectsWatcher extends EventEmitter {
     }
   }
 
+  /**
+   * Iterate through contract topics in log and emit "contract-event" when topic is in subscribed topics
+   * @param {object} log object
+   */
   handleLog(log) {
     for (let i = 0; i < log.topics.length; i++) {
       if (this.subscribedTopics.indexOf(log.topics[i]) >= 0) {
