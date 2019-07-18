@@ -6,6 +6,8 @@ import {
   web3ActionCreator,
 } from "../web3/helpers/Web3ActionCreator";
 import { getAccounts } from "../accounts/actions";
+import { addLogLines } from "../logs/actions";
+import { ignoreTxToAddresses } from "../transactions/actions"
 
 const prefix = "CORE";
 
@@ -120,10 +122,27 @@ export const getBlockSubscription = function() {
 
       if (blockHeader.number != currentBlockNumber) {
         dispatch(setBlockNumber(blockHeader.number));
+        dispatch(fetchBlockLogs(currentBlockNumber, blockHeader.number));
       }
     });
   };
 };
+
+export const fetchBlockLogs = function(previousBlockNumber, nextBlockNumber) {
+  return async function(dispatch, getState) {
+    let logs = await web3ActionCreator(dispatch, getState, "getPastLogs", [
+      {
+        fromBlock: previousBlockNumber||1,
+        toBlock: nextBlockNumber,
+      },
+    ]);
+    const filteredLogs = logs.filter(item => {
+      return ignoreTxToAddresses.indexOf(item.address+'') < 0;
+    });
+    dispatch(addLogLines(filteredLogs.map(log=>{return JSON.stringify(log)})));
+  };
+};
+
 
 export const SET_SYSTEM_ERROR = `${prefix}/SET_SYSTEM_ERROR`;
 export const setSystemError = function(error, showBugModal, category, detail) {

@@ -13,7 +13,7 @@ const PAGE_SIZE = 10;
 // Ignore transactions to below to address to avoid them from flooding Transactions tab
 // 0x1000006 is bridge, a native RSK smart contract to issue equal amount of rBTC to BTC locked
 // 0x1000008 is REMASC, a native RSK smart contract used to reward mining
-const ignoreTxToAddresses = [
+export const ignoreTxToAddresses = [
   "0x0000000000000000000000000000000001000006",
   "0x0000000000000000000000000000000001000008",
 ];
