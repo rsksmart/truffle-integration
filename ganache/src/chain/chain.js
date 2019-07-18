@@ -81,7 +81,7 @@ function startServer(options) {
     const startingMessage = `Starting server (version ${
       pkg.version
     }) with initial configuration: ${JSON.stringify(sanitizedOptions)}`;
-    console.log(startingMessage);
+
     if (logToFile) {
       logging.logToFile(startingMessage);
     }
@@ -94,10 +94,8 @@ function startServer(options) {
       if (payload.internal !== true) {
         if (Array.isArray(payload)) {
           payload.forEach(function(item) {
-            console.log(item.method);
           });
         } else {
-          console.log(payload.method);
         }
       }
 
@@ -162,8 +160,7 @@ function startServer(options) {
 
       process.send({ type: "server-started", data: data });
 
-      console.log("Ganache started successfully!");
-      console.log("Waiting for requests...");
+      console.log("Listening for logs...");
     });
 
     server.on("close", function() {
