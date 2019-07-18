@@ -3,6 +3,7 @@
 var ganacheLib = require("ganache-core");
 var logging = require("./logging");
 var pkg = require("../../package.json");
+const { generateKeyPairs } = require("../helpers/keyUtils");
 
 if (!process.send) {
   console.log("Not running as child process. Throwing.");
@@ -134,14 +135,8 @@ function startServer(options) {
         return;
       }
 
-      let privateKeys = {};
-
-      var accounts = state.accounts;
-      var addresses = Object.keys(accounts);
-
-      addresses.forEach(function(address) {
-        privateKeys[address] = accounts[address].secretKey.toString("hex");
-      });
+      const numAddresses = (options && options.total_accounts) || 10;
+      let privateKeys = generateKeyPairs(numAddresses);
 
       let data = Object.assign({}, server.provider.options);
 

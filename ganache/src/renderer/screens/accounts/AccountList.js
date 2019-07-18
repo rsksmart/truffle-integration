@@ -32,6 +32,7 @@ class AccountList extends Component {
 
   _renderAccounts = () => {
     const self = this;
+    
     return this.props.accounts.map((account, index) => {
       return (
         <div className="AccountCard" key={`account-card-${index}`}>
@@ -67,7 +68,7 @@ class AccountList extends Component {
                   account,
                   // need to pass lower case account here because account is
                   // checksummed address
-                  self.props.privateKeys[index],
+                  self.props.privateKeys[account && account.toLowerCase()],
                 );
               }}
             >
