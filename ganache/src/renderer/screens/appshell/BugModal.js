@@ -74,7 +74,9 @@ class BugModal extends Component {
       this.props.systemError.stack || this.props.systemError;
     let sanitizedSystemError = "";
 
-    if (unsanitizedSystemError) {
+    console.log("unsanitizedSystemError", unsanitizedSystemError);
+
+    if (unsanitizedSystemError && typeof unsanitizedSystemError === 'string') {
       sanitizedSystemError = sanitizeError(unsanitizedSystemError);
     }
 
