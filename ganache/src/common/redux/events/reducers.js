@@ -23,7 +23,7 @@ const initialState = {
 
 // Note: This sorts in reverse; higher blocks first
 function sort(events) {
-  return events.sort(function(a, b) {
+  return events.sort(function (a, b) {
     if (a.blockNumber > b.blockNumber) {
       return -1;
     }
@@ -50,7 +50,7 @@ function sort(events) {
   });
 }
 
-export default function(state = initialState, action) {
+export default function (state = initialState, action) {
   let nextState = cloneDeep(state);
 
   switch (action.type) {
@@ -73,7 +73,10 @@ export default function(state = initialState, action) {
       }
       break;
     case ADD_EVENTS_TO_VIEW:
-      nextState.inView = sort(state.inView.concat(action.events));
+      let unseenEvents = action.events.filter(event => {
+        return state.inView.map(e => e.id).indexOf(event.id) < 0
+      });
+      nextState.inView = sort(state.inView.concat(unseenEvents));
       break;
     case SET_SUBSCRIBED_TOPICS:
       nextState.subscribedTopics = cloneDeep(action.topics);

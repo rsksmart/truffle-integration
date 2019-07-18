@@ -10,6 +10,7 @@ class TransactionsScreen extends Component {
   }
 
   componentWillUnmount() {
+    // commented to prevent transactions get cleared when switch tabs
     // this.props.dispatch(Transactions.clearTransactionsInView());
   }
 
