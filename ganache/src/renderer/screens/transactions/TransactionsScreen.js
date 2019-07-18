@@ -10,7 +10,7 @@ class TransactionsScreen extends Component {
   }
 
   componentWillUnmount() {
-    this.props.dispatch(Transactions.clearTransactionsInView());
+    // this.props.dispatch(Transactions.clearTransactionsInView());
   }
 
   render() {
