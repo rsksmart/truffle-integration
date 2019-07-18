@@ -129,6 +129,9 @@ export const getBlockSubscription = function() {
 };
 
 export const fetchBlockLogs = function(previousBlockNumber, nextBlockNumber) {
+  // TODO: we should have this value in workspace settings to turn it on and off
+  // Right now hard-coded here to switch it on/off
+  const isFilterOn = false;
   return async function(dispatch, getState) {
     let logs = await web3ActionCreator(dispatch, getState, "getPastLogs", [
       {
@@ -136,10 +139,17 @@ export const fetchBlockLogs = function(previousBlockNumber, nextBlockNumber) {
         toBlock: nextBlockNumber,
       },
     ]);
+
     const filteredLogs = logs.filter(item => {
-      return ignoreTxToAddresses.indexOf(item.address+'') < 0;
+      // Match filter rules is isFilterOn is true
+      if(isFilterOn) {
+        return ignoreTxToAddresses.indexOf(item.address+'') < 0;
+      } else {
+        return true;
+      }
     });
-    dispatch(addLogLines(filteredLogs.map(log=>{return JSON.stringify(log)})));
+
+    dispatch(addLogLines(filteredLogs.map( log => JSON.stringify(log))));
   };
 };
 
