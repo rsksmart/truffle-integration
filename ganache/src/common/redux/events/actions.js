@@ -8,19 +8,19 @@ const PAGE_SIZE = 10;
 export const ADD_EVENTS_TO_VIEW = `${prefix}/ADD_EVENTS_TO_VIEW`;
 export const CLEAR_EVENTS_IN_VIEW = `${prefix}/CLEAR_EVENTS_IN_VIEW`;
 export const SET_BLOCKS_REQUESTED = `${prefix}/SET_BLOCKS_REQUESTED`;
-export const clearEventsInView = function () {
+export const clearEventsInView = function() {
   return { type: CLEAR_EVENTS_IN_VIEW, events: [] };
 };
 
 export const SET_SUBSCRIBED_TOPICS = `${prefix}/SET_SUBSCRIBED_TOPICS`;
-export const setSubscribedTopics = function (topics) {
+export const setSubscribedTopics = function(topics) {
   return { type: SET_SUBSCRIBED_TOPICS, topics };
 };
 
 export const SET_LOADING = `${prefix}/SET_LOADING`;
-export const requestPage = function (startBlockNumber, endBlockNumber) {
+export const requestPage = function(startBlockNumber, endBlockNumber) {
   endBlockNumber = endBlockNumber || 0;
-  return async function (dispatch, getState) {
+  return async function(dispatch, getState) {
     if (startBlockNumber == null) {
       startBlockNumber = getState().core.latestBlock;
     }
@@ -61,7 +61,7 @@ export const requestPage = function (startBlockNumber, endBlockNumber) {
     ]);
 
     const subscribedTopics = getState().events.subscribedTopics;
-    //TODO need investigation the logs are only the recent two blocks 
+    //TODO need investigation the logs are only the recent two blocks
     logs = logs.filter(log => {
       for (let i = 0; i < log.topics.length; i++) {
         if (subscribedTopics.indexOf(log.topics[i]) >= 0) {
@@ -106,16 +106,16 @@ export const requestPage = function (startBlockNumber, endBlockNumber) {
 };
 
 // The "next" page is the next set of blocks, from the last requested down to 0
-export const requestNextPage = function () {
-  return function (dispatch, getState) {
+export const requestNextPage = function() {
+  return function(dispatch, getState) {
     var blocksRequested = Object.keys(getState().events.blocksRequested);
     var earliestBlockRequested = Math.min.apply(Math, blocksRequested);
     dispatch(requestPage(earliestBlockRequested - 1));
   };
 };
 
-export const requestPreviousPage = function () {
-  return function (dispatch, getState) {
+export const requestPreviousPage = function() {
+  return function(dispatch, getState) {
     var blocksRequested = Object.keys(getState().events.blocksRequested);
 
     if (blocksRequested.length == 0) {
@@ -133,8 +133,8 @@ export const requestPreviousPage = function () {
 };
 
 export const GET_DECODED_EVENT = `${prefix}/GET_DECODED_EVENT`;
-export const getDecodedEvent = function (transactionHash, logIndex) {
-  return async function (dispatch, getState) {
+export const getDecodedEvent = function(transactionHash, logIndex) {
+  return async function(dispatch, getState) {
     let event;
 
     const transaction = await web3ActionCreator(
