@@ -9,8 +9,8 @@ export default class FormattedEtherValue extends Component {
         this.props.value,
         this.props.fromUnit,
         this.props.toUnit,
-      ),
-    ).toFixed(2);
+      )
+    ).toFixed(4);
     return (
       <span
         title={weiValueInRBTC}
