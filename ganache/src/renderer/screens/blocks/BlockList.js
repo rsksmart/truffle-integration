@@ -17,7 +17,7 @@ class BlockList extends Component {
     if (
       nextProps.appshell.scrollPosition != this.props.appshell.scrollPosition
     ) {
-      if (nextProps.appshell.scrollPosition == "top" && !latestRequested) {
+      if (!latestRequested) {
         this.props.dispatch(Blocks.requestPreviousPage());
       } else if (
         nextProps.appshell.scrollPosition == "bottom" &&
@@ -25,9 +25,14 @@ class BlockList extends Component {
       ) {
         this.props.dispatch(Blocks.requestNextPage());
       }
-      return;
-    }
 
+      return;
+    } else if (
+      this.props.appshell.scrollPosition === "middle" &&
+      !latestRequested
+    ) {
+      this.props.dispatch(Blocks.requestPreviousPage());
+    }
     // No change in scroll position? If a new block has been added,
     // request the previous page
     if (nextProps.blocks.inView.length == 0) {
@@ -46,7 +51,7 @@ class BlockList extends Component {
 
   render() {
     return (
-      <div className="BlockList" ref="container">
+      <div className="BlockList" ref={ref => (this.container = ref)}>
         {this.props.blocks.inView.map(block => {
           return (
             <MiniBlockCard
