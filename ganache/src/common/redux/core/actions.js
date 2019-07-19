@@ -8,6 +8,7 @@ import {
 import { getAccounts } from "../accounts/actions";
 import { addLogLines } from "../logs/actions";
 import { ignoreTxToAddresses } from "../transactions/actions"
+import { feedLogs } from "../events/actions";
 
 const prefix = "CORE";
 
@@ -150,6 +151,7 @@ export const fetchBlockLogs = function(previousBlockNumber, nextBlockNumber) {
     });
 
     dispatch(addLogLines(filteredLogs.map( log => JSON.stringify(log))));
+    dispatch(feedLogs(filteredLogs,nextBlockNumber));
   };
 };
 
