@@ -61,7 +61,7 @@ export const requestPage = function(startBlockNumber, endBlockNumber) {
     ]);
 
     const subscribedTopics = getState().events.subscribedTopics;
-
+    //TODO need investigation the logs are only the recent two blocks
     logs = logs.filter(log => {
       for (let i = 0; i < log.topics.length; i++) {
         if (subscribedTopics.indexOf(log.topics[i]) >= 0) {
@@ -104,6 +104,67 @@ export const requestPage = function(startBlockNumber, endBlockNumber) {
     });
   };
 };
+
+export const feedLogs = function(logs, currentBlockNumber){
+  return async function(dispatch, getState) {
+    const subscribedTopics = getState().events.subscribedTopics;
+    logs = logs.filter(log => {
+      for (let i = 0; i < log.topics.length; i++) {
+        if (subscribedTopics.indexOf(log.topics[i]) >= 0) {
+          return true;
+        }
+      }
+      return false;
+    });
+    if (logs.length == 0) return;
+
+    dispatch({
+      type: SET_LOADING,
+      loading: true,
+    });
+
+    let blockTimestamps = {};
+    for (let i = Math.max(currentBlockNumber-5,1); i <= currentBlockNumber; i++) {
+      const block = await web3ActionCreator(dispatch, getState, "getBlock", [
+        i,
+        false,
+      ]);
+      blockTimestamps[i] = block ? block.timestamp : null;
+    }
+
+    const contractCache = getState().workspaces.current.contractCache;
+    const projects = getState().workspaces.current.projects;
+    for (let i = 0; i < logs.length; i++) {
+      const log = logs[i];
+      const cache = contractCache[log.address];
+      log.timestamp = blockTimestamps[log.blockNumber];
+
+      if (cache && cache.contract) {
+        const contract = cache.contract;
+        const projectContracts = projects[contract.projectIndex].contracts;
+        const decodedLog = await new Promise(resolve => {
+          // TODO: there's a better way to do this to not have to send `contract` and `contracts` every time
+          ipcRenderer.once(GET_DECODED_EVENT, (event, decodedLog) => {
+            resolve(decodedLog);
+          });
+          ipcRenderer.send(GET_DECODED_EVENT, contract, projectContracts, log);
+        });
+
+        if (decodedLog) {
+          log.name = decodedLog.name;
+          log.contract = contract.contractName;
+        }
+      }
+    }
+
+    dispatch({ type: ADD_EVENTS_TO_VIEW, events: logs });
+
+    dispatch({
+      type: SET_LOADING,
+      loading: false,
+    });
+  };
+}
 
 // The "next" page is the next set of blocks, from the last requested down to 0
 export const requestNextPage = function() {

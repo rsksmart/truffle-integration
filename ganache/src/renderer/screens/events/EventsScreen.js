@@ -10,7 +10,8 @@ class EventsScreen extends Component {
   }
 
   componentWillUnmount() {
-    this.props.dispatch(Events.clearEventsInView());
+    // commented to prevent events get cleared when switch tabs
+    // this.props.dispatch(Events.clearEventsInView());
   }
 
   render() {

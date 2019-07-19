@@ -86,6 +86,10 @@ class ProjectsWatcher extends EventEmitter {
    * @param {number} blockNumber
    */
   fetchLogsToBlock(blockNumber) {
+    //start from the first read block, ignore the previous ones
+    if (this.fromBlockHeight < 0) {
+      this.fromBlockHeight = blockNumber;
+    }
     // Skip if new block height is not greater than from block height
     // Meaning current block has already been queried
     if (this.fromBlockHeight >= blockNumber) {
@@ -99,7 +103,7 @@ class ProjectsWatcher extends EventEmitter {
       })
       .then(logs => {
         logs.forEach(async log => {
-          await this.handleLog(log);
+          this.handleLog(log);
         });
 
         // Set from block height to be the same as block number
@@ -145,13 +149,15 @@ class ProjectsWatcher extends EventEmitter {
     let topics = [];
     for (let i = 0; i < project.contracts.length; i++) {
       const contract = project.contracts[i];
-      const abiEvents = contract.abi.filter(entry => {
-        return (
-          entry.type === "event" &&
-          this.subscribedTopics.indexOf(entry.signature) === -1
-        );
-      });
-      topics = topics.concat(abiEvents.map(event => event.signature));
+      if (contract.events) {
+        const events = contract.events.filter(entry => {
+          return (
+            entry.type === "event" &&
+            this.subscribedTopics.indexOf(entry.signature) === -1
+          );
+        });
+        topics = topics.concat(events.map(event => event.signature));
+      }
     }
     this.subscribedTopics = this.subscribedTopics.concat(topics);
   }

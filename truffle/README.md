@@ -1,7 +1,8 @@
 # Truffle
 
 ## Deployment
-`truffle migrate --network regtest`
+`truffle migrate --network regtest` 
+*run it twice to avoid truff issue #2224 *
 
 
 ## Call Smart Contract Methods

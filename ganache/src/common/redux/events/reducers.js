@@ -73,7 +73,10 @@ export default function(state = initialState, action) {
       }
       break;
     case ADD_EVENTS_TO_VIEW:
-      nextState.inView = sort(state.inView.concat(action.events));
+      let unseenEvents = action.events.filter(event => {
+        return state.inView.map(e => e.id).indexOf(event.id) < 0;
+      });
+      nextState.inView = sort(state.inView.concat(unseenEvents));
       break;
     case SET_SUBSCRIBED_TOPICS:
       nextState.subscribedTopics = cloneDeep(action.topics);
