@@ -134,7 +134,6 @@ const performShutdownTasks = async ({ truffleIntegration, chain }) => {
 app.on("ready", () => {
   // workaround for electron race condition, causing hang on startup.
   // see https://github.com/electron/electron/issues/9179 for more info
-  // console.log(app.getPath("userData"),"");
 
   setTimeout(async () => {
     const width = screen.getPrimaryDisplay().bounds.width;
