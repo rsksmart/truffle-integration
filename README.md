@@ -15,7 +15,7 @@
 ## Truffle
 1. Navigate to under /truffle
 1. `npm install`
-3. `truffle migrate --reset --network regtest` to deploy Coin smart contract. *run it twice to avoid truff issue #2224 *
+1. `truffle migrate --reset --network regtest` to deploy Coin smart contract. *run it twice to avoid truff issue #2224 *
 1. Once deployed, run `truffle console --network regtest`. The Coin variable is already defined in the console.
 1. In truffle console, mint Coin by `Coin.deployed().then((instance=>instance.mint("0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826", 100)))`
 1. Then, send Coin by `Coin.deployed().then((instance=>instance.send('0x7986b3DF570230288501EEa3D890bd66948C9B79',50)))`
