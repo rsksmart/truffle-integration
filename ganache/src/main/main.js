@@ -9,12 +9,19 @@ import moniker from "moniker";
 import fixPath from "fix-path";
 
 const isDevMode = process.execPath.match(/[\\/]electron/) !== null;
+let userDataPath = app.getPath("userData");
 
 if (isDevMode) {
   enableLiveReload({ strategy: "react-hmr" });
-
+  const customPath = userDataPath.replace(/[\\/]Electron/, "/ElectronForRsk");
+  app.setPath("userData", customPath);
   // let installExtension = require('electron-devtools-installer')
   // let REACT_DEVELOPER_TOOLS = installExtension.REACT_DEVELOPER_TOOLS
+} else {
+  if (userDataPath.match(/[\\/]Ganache/)) {
+    const customPath = userDataPath.replace(/[\\/]Ganache/, "/GanacheForRsk");
+    app.setPath("userData", customPath);
+  }
 }
 
 import {
