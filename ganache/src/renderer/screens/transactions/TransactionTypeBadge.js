@@ -13,7 +13,7 @@ export default class TransactionTypeBadge extends Component {
       );
     }
 
-    if (this.props.tx.to && this.props.tx.input && this.props.tx.input != '0x00') {
+    if (this.props.tx.to && this.props.tx.input && this.props.contractInfo) {
       return (
         <div className="TransactionTypeBadge ContractCallBadge">
           CONTRACT CALL

@@ -9,7 +9,7 @@ import OnlyIf from "../../components/only-if/OnlyIf";
 
 export default class MiniTxCard extends Component {
   render() {
-    let { tx, receipt, contractName } = this.props;
+    let { tx, receipt, contractName, contractInfo } = this.props;
 
     let hasReceipt = !!receipt;
 
@@ -32,7 +32,7 @@ export default class MiniTxCard extends Component {
 
             <div className="RowItem">
               <OnlyIf test={hasReceipt}>
-                <TransactionTypeBadge tx={tx} receipt={receipt} />
+                <TransactionTypeBadge tx={tx} receipt={receipt} contractInfo={contractInfo} />
               </OnlyIf>
             </div>
           </div>
