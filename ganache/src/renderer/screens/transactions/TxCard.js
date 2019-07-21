@@ -109,7 +109,7 @@ class TxCard extends Component {
             <div>
               <div className="Value">
                 <div className="Type">
-                  <TransactionTypeBadge tx={tx} receipt={receipt} />
+                  <TransactionTypeBadge tx={tx} contractInfo={contractInfo} receipt={receipt} />
                 </div>
               </div>
             </div>

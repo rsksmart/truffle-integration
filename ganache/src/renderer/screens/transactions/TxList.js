@@ -11,6 +11,7 @@ class TxList extends Component {
     if (this.props.transactions.length > 0) {
       content = this.props.transactions.map(tx => {
         let contractName = null;
+        let contractInfo = null;
         if (tx.to) {
           for (
             let i = 0;
@@ -25,6 +26,7 @@ class TxList extends Component {
                 contract.address.toLowerCase() === tx.to.toLowerCase()
               ) {
                 contractName = contract.contractName;
+                contractInfo = contract;
               }
             }
           }
@@ -33,6 +35,7 @@ class TxList extends Component {
           <MiniTxCard
             tx={tx}
             contractName={contractName}
+            contractInfo={contractInfo}
             receipt={this.props.receipts[tx.hash]}
             key={`tx-${tx.hash}`}
           />

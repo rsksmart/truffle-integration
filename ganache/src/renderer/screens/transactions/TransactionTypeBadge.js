@@ -13,7 +13,7 @@ export default class TransactionTypeBadge extends Component {
       );
     }
 
-    if (this.props.tx.to && this.props.tx.input) {
+    if (this.props.tx.to && this.props.tx.input && this.props.contractInfo) {
       return (
         <div className="TransactionTypeBadge ContractCallBadge">
           CONTRACT CALL
@@ -28,5 +28,6 @@ export default class TransactionTypeBadge extends Component {
         </div>
       );
     }
+    return (<div/>); //when nothing matches, show no badge
   }
 }
