@@ -7,6 +7,8 @@ import DestinationAddress from "./DestinationAddress";
 
 import OnlyIf from "../../components/only-if/OnlyIf";
 
+import ChecksumAddress from "../../components/checksum-addresses/ChecksumAddress";
+
 export default class MiniTxCard extends Component {
   render() {
     let { tx, receipt, contractName, contractInfo } = this.props;
@@ -32,7 +34,11 @@ export default class MiniTxCard extends Component {
 
             <div className="RowItem">
               <OnlyIf test={hasReceipt}>
-                <TransactionTypeBadge tx={tx} receipt={receipt} contractInfo={contractInfo} />
+                <TransactionTypeBadge
+                  tx={tx}
+                  receipt={receipt}
+                  contractInfo={contractInfo}
+                />
               </OnlyIf>
             </div>
           </div>
@@ -42,7 +48,9 @@ export default class MiniTxCard extends Component {
               <div className="RowItem">
                 <div className="From">
                   <div className="Label">FROM ADDRESS</div>
-                  <div className="Value">{tx.from}</div>
+                  <div className="Value">
+                    <ChecksumAddress address={tx.from} />
+                  </div>
                 </div>
               </div>
 

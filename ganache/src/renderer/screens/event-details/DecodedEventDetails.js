@@ -1,15 +1,38 @@
 import React, { Component } from "react";
 import Moment from "react-moment";
+
+import { toChecksumAddress } from "../../../helpers/checksumAddress";
+
 class DecodedEventDetails extends Component {
+  /**
+   * @description: 
+   * @param {Object} returnVal 
+   * @return: {String} if the value is an address, return a formatted address.if the value is type of array,
+    the string will return after be separated by commas
+   */
+  formatReturnValWithRskRule(returnVal) {
+    if (Array.isArray(returnVal.value)) {
+      if (returnVal.name === "to") {
+        let formattedAddresses = returnVal.value.map(val =>
+          toChecksumAddress(val),
+        );
+        return formattedAddresses.join(", ");
+      } else {
+        return returnVal.value.join(", ");
+      }
+    } else {
+      return returnVal.name === "to"
+        ? toChecksumAddress(returnVal.value)
+        : returnVal.value;
+    }
+  }
   renderReturnValue(returnValues) {
     return returnValues.map((returnVal, index) => (
       <div className="DataRow" key={index}>
         <div className="DataPoint">
           <div className="Label">{returnVal.name}</div>
           <div className="Value">
-            {Array.isArray(returnVal.value)
-              ? returnVal.value.join(", ")
-              : returnVal.value}
+            {this.formatReturnValWithRskRule(returnVal)}
           </div>
         </div>
       </div>
@@ -37,7 +60,7 @@ class DecodedEventDetails extends Component {
             </div>
             <div className="DataPoint">
               <div className="Label">CONTRACT ADDRESS</div>
-              <div className="Value">{contractAddress}</div>
+              <div className="Value">{toChecksumAddress(contractAddress)}</div>
             </div>
           </div>
         </div>

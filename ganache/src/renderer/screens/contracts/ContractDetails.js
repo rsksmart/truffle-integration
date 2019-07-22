@@ -16,6 +16,8 @@ import {
 import OnlyIf from "../../components/only-if/OnlyIf";
 import { sanitizeError } from "../helpers/sanitize";
 
+import { toChecksumAddress } from "../../../helpers/checksumAddress";
+
 class ContractDetails extends Component {
   constructor(props) {
     super(props);
@@ -90,6 +92,18 @@ class ContractDetails extends Component {
   }
 
   render() {
+    let storageVariables = this.props.workspaces.current.shownContract.state
+      .variables;
+    const hasStorageVariables = typeof storageVariables !== "undefined";
+    if (hasStorageVariables) {
+      for (let variableName in storageVariables) {
+        let variable = storageVariables[variableName];
+        if (variable.type === "address") {
+          variable.value = toChecksumAddress(variable.value);
+        }
+      }
+    }
+
     const events = this.props.workspaces.current.shownContract.shownEvents.map(
       event => {
         return {
@@ -150,9 +164,7 @@ class ContractDetails extends Component {
               }
             >
               <ReactJson
-                src={
-                  this.props.workspaces.current.shownContract.state.variables
-                }
+                src={storageVariables}
                 name={false}
                 theme={{
                   scheme: "ganache",
