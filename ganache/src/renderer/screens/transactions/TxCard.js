@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { hashHistory } from "react-router";
 
 import connect from "../helpers/connect";
+import { toChecksumAddress } from "../../../helpers/checksumAddress";
 
 import * as Transactions from "../../../common/redux/transactions/actions";
 
@@ -74,7 +75,7 @@ class TxCard extends Component {
     if (hasDecodedInfo) {
       contractInfo = {
         name: contract.contractName,
-        address: contract.address,
+        address: toChecksumAddress(contract.address),
         functionName:
           decodedData.name +
           "(" +
@@ -82,7 +83,11 @@ class TxCard extends Component {
             .map(param => param.name + ": " + param.type)
             .join(", ") +
           ")",
-        inputs: decodedData.params.map(param => param.value),
+        inputs: decodedData.params.map(param => {
+          return param.type === "address"
+            ? toChecksumAddress(param.value)
+            : param.value;
+        }),
         stateChanges: [],
       };
     }
@@ -103,13 +108,17 @@ class TxCard extends Component {
           <section className="Parties">
             <div className="From">
               <div className="Label">SENDER ADDRESS</div>
-              <div className="Value">{tx.from}</div>
+              <div className="Value">{toChecksumAddress(tx.from)}</div>
             </div>
             <DestinationAddress tx={tx} receipt={receipt} />
             <div>
               <div className="Value">
                 <div className="Type">
-                  <TransactionTypeBadge tx={tx} contractInfo={contractInfo} receipt={receipt} />
+                  <TransactionTypeBadge
+                    tx={tx}
+                    contractInfo={contractInfo}
+                    receipt={receipt}
+                  />
                 </div>
               </div>
             </div>
@@ -175,7 +184,7 @@ class TxCard extends Component {
               <div>
                 <div className="Label">ADDRESS</div>
                 <div className="Value">
-                  {contractInfo && contractInfo.address}
+                  {contractInfo && toChecksumAddress(contractInfo.address)}
                 </div>
               </div>
             </section>

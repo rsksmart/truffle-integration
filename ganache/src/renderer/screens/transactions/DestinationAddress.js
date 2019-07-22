@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { toChecksumAddress } from "../../../helpers/checksumAddress";
 
 export default class DestinationAddress extends Component {
   render() {
@@ -23,10 +24,14 @@ export default class DestinationAddress extends Component {
         <div className="Value">
           {isContractCreationCall ? (
             <div className="ContractCreationAddress">
-              <span>{this.props.receipt.contractAddress}</span>
+              <span>
+                {toChecksumAddress(this.props.receipt.contractAddress)}
+              </span>
             </div>
           ) : (
-            <div>{this.props.contractName || this.props.tx.to}</div>
+            <div>
+              {this.props.contractName || toChecksumAddress(this.props.tx.to)}
+            </div>
           )}
         </div>
       </div>
