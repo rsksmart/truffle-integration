@@ -17,7 +17,7 @@ class BlockList extends Component {
     if (
       nextProps.appshell.scrollPosition != this.props.appshell.scrollPosition
     ) {
-      if (!latestRequested) {
+      if (this.props.appshell.scrollPosition === "top" && !latestRequested) {
         this.props.dispatch(Blocks.requestPreviousPage());
       } else if (
         nextProps.appshell.scrollPosition == "bottom" &&
@@ -25,12 +25,8 @@ class BlockList extends Component {
       ) {
         this.props.dispatch(Blocks.requestNextPage());
       }
-
       return;
-    } else if (
-      this.props.appshell.scrollPosition === "middle" &&
-      !latestRequested
-    ) {
+    } else if (!latestRequested) {
       this.props.dispatch(Blocks.requestPreviousPage());
     }
     // No change in scroll position? If a new block has been added,
