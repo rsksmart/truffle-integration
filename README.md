@@ -1,9 +1,9 @@
 # Ganache with RSK
 
-## RSKJ Docker
+## RSKj Docker
 1. Install Docker from https://www.docker.com/products/docker-desktop
 1. Make sure you have login docker hub and able to do `docker ps` in terminal
-1. Navigate to under /docker, run `docker build -t regtest -f Dockerfile.RegTest .` This comamnd will build download Rskj node and build the image. It takes about 10 mins for the first time downloading.
+1. Navigate to under /docker, run "`docker build -t regtest -f Dockerfile.RegTest .`" This comamnd will build download Rskj node and build the image. The first time it is downloaded may take time.
 1. Once built, we can start a container with the image using `docker run -d --name regtest-node-01 -p 4444:4444 -p 4445:4445 -p 30305:30305 regtest`. This command will start Rskj node with port 4444, 4445 and 30305 open
 1. To shut down or remove the active container, use the following commands `docker container list , docker kill <container id>, docker rm <container id>`
 
