@@ -4,8 +4,6 @@ import assert from "assert";
 import fs from "fs";
 import path from "path";
 import isEqual from "lodash.isequal";
-import ganacheLib from "ganache-core";
-import Web3 from "web3";
 
 describe("New Workspace", () => {
   let configDirectory = "/";
@@ -38,20 +36,5 @@ describe("New Workspace", () => {
       isEqual(workspaceSettings, settings),
       "The settings in the workspace don't match what's in the Settings file",
     );
-  });
-
-  it("started and stopped ganache provider with no errors", done => {
-    var web3 = new Web3();
-    web3.setProvider(ganacheLib.provider(workspace.settings.getAll()));
-
-    web3.eth.getAccounts(function(err, result) {
-      if (err) return done(err);
-      assert(
-        result.length,
-        10,
-        "The number of accounts created should be 10 (the default)",
-      );
-      done();
-    });
   });
 });

@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-var ganacheLib = require("ganache-core");
 var logging = require("./logging");
 var pkg = require("../../package.json");
 const { generateKeyPairs } = require("../helpers/keyUtils");
@@ -90,8 +89,8 @@ function startServer(options) {
     // Generate address and private keys and save into an object data.privateKeys
     const numAddresses = (options && options.total_accounts) || 10;
     let privateKeys = generateKeyPairs(numAddresses);
-    
-    const data ={}
+
+    const data = {};
     data.hdPath = "";
     data.mnemonic = "";
     data.privateKeys = privateKeys;
