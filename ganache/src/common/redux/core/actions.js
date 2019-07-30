@@ -7,7 +7,7 @@ import {
 } from "../web3/helpers/Web3ActionCreator";
 import { getAccounts } from "../accounts/actions";
 import { addLogLines } from "../logs/actions";
-import { ignoreTxToAddresses } from "../transactions/actions"
+import { ignoreTxToAddresses } from "../transactions/actions";
 import { feedLogs } from "../events/actions";
 
 const prefix = "CORE";
@@ -136,25 +136,29 @@ export const fetchBlockLogs = function(previousBlockNumber, nextBlockNumber) {
   return async function(dispatch, getState) {
     let logs = await web3ActionCreator(dispatch, getState, "getPastLogs", [
       {
-        fromBlock: previousBlockNumber||1,
+        fromBlock: previousBlockNumber || 1,
         toBlock: nextBlockNumber,
       },
     ]);
 
+    // Call return if the instance of web3 is null;
+    if (!logs) {
+      return;
+    }
+
     const filteredLogs = logs.filter(item => {
       // Match filter rules is isFilterOn is true
-      if(isFilterOn) {
-        return ignoreTxToAddresses.indexOf(item.address+'') < 0;
+      if (isFilterOn) {
+        return ignoreTxToAddresses.indexOf(item.address + "") < 0;
       } else {
         return true;
       }
     });
 
-    dispatch(addLogLines(filteredLogs.map( log => JSON.stringify(log))));
-    dispatch(feedLogs(filteredLogs,nextBlockNumber));
+    dispatch(addLogLines(filteredLogs.map(log => JSON.stringify(log))));
+    dispatch(feedLogs(filteredLogs, nextBlockNumber));
   };
 };
-
 
 export const SET_SYSTEM_ERROR = `${prefix}/SET_SYSTEM_ERROR`;
 export const setSystemError = function(error, showBugModal, category, detail) {
