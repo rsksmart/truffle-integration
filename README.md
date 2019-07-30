@@ -1,9 +1,17 @@
 # Ganache with RSK
 
+## Note for For MAC OSX Developers 
+1. Ensure you are running xcode directly and not the command-line instance. Run `sudo xcode-select -s /Applications/Xcode.app/Contents/Developer`
+
+## Clone the RSK truffle-integration
+1. git clone https://github.com/rootstock/truffle-integration
+1. cd truffle-integration/
+
 ## RSKJ Docker
 1. Install Docker from https://www.docker.com/products/docker-desktop
 1. Make sure you have login docker hub and able to do `docker ps` in terminal
-1. Navigate to under /docker, run `docker build -t regtest -f Dockerfile.RegTest .` This comamnd will build download Rskj node and build the image. It takes about 10 mins for the first time downloading.
+1. `cd docker/`
+1. run the command: `docker build -t regtest -f Dockerfile.RegTest .` This comamnd will build download Rskj node and build the image. It takes about 10 mins for the first time downloading.
 1. Once built, we can start a container with the image using `docker run -d --name regtest-node-01 -p 4444:4444 -p 4445:4445 -p 30305:30305 regtest`. This command will start Rskj node with port 4444, 4445 and 30305 open
 1. To shut down or remove the active container, use the following commands `docker container list , docker kill <container id>, docker rm <container id>`
 
@@ -36,8 +44,6 @@
 ![save-truffle-project](https://files.readme.io/3c13553-WX20190730-1043372x.png)
 (insert screenshots that are similar to the ones on this page) https://www.trufflesuite.com/docs/ganache/truffle-projects/linking-a-truffle-project 
 
-
-
 ## 2. Why are events not shown in Ganache?
 Ganache'll try to decode the events that are defined in the contracts within the corresponding Truffle project. Check and make sure you've them ready.
 1. Make sure you have linked the corresponding Truffle project
@@ -49,8 +55,4 @@ Ganache'll try to decode the events that are defined in the contracts within the
 1. Make sure the contract's json file has the events field. The contract's json file can be found in path <truffle-project>/build/<contract-name>.json. Open the json file and search for networks. You should see "33" under the "networks" key and also "events" under the "33". (See screenshot below). If the events field is empty, run migrate --reset to re-deploy the contract. This is due to an issue within the truffle development tool https://github.com/trufflesuite/truffle/issues/2224
 
 ![make-sure-events-exist](https://files.readme.io/c276b55-WX20190730-110458.png)
-
-
-
-
 
