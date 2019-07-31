@@ -210,7 +210,7 @@
     "@seesemichaelj/react-json-view": "^1.20.2",
     "async": "^2.5.0",
     "benjamincburns-forked-electron-updater": "2.21.6",
-    "bignumber": "^1.1.0",
+    "bignumber.js": "9.0.0",
     "builder-util-runtime": "^4.2.0",
     "electron-compile": "^6.4.2",
     "electron-settings": "^3.1.2",
