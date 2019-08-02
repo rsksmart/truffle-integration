@@ -23,10 +23,20 @@
 ## Truffle
 1. Navigate to under /truffle
 1. `npm install`
-1. `truffle migrate --reset --network regtest` to deploy Coin smart contract. *run it twice to avoid truff issue #2224 *
+1. `truffle migrate --reset --network regtest` to deploy Coin smart contract. *run it twice to avoid truff issue #2224*
 1. Once deployed, run `truffle console --network regtest`. The Coin variable is already defined in the console.
-1. In truffle console, mint Coin by `Coin.deployed().then((instance=>instance.mint("0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826", 100)))`
+1. For the Coin,in truffle console, mint Coin by `Coin.deployed().then((instance=>instance.mint("0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826", 100)))`
 1. Then, send Coin by `Coin.deployed().then((instance=>instance.send('0x7986b3DF570230288501EEa3D890bd66948C9B79',50)))`
+1. For the EIP20, check balance
+`EIP20.deployed().then((instance=>instance.balanceOf("0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826")))`
+1. Transfer from the minter account to another account
+`EIP20.deployed().then((instance=>instance.transfer("0x7986b3DF570230288501EEa3D890bd66948C9B79", 1)))`
+1. Approve another account for certain allowance to spend
+`EIP20.deployed().then((instance=>instance.approve("0x7986b3DF570230288501EEa3D890bd66948C9B79", 10)))`
+1. Check the allowance is indeed existing
+`EIP20.deployed().then((instance=>instance.allowance("0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826","0x7986b3DF570230288501EEa3D890bd66948C9B79")))`
+1. Switch to the other account in truffle ,truffle console --network regtestAccountTwo
+1. Then execute this transfer `EIP20.deployed().then((instance=>instance.transferFrom("0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826", "0x7986b3DF570230288501EEa3D890bd66948C9B79",3)))`
 
 # FAQ:
 ## 1. How to link Truffle projects to Ganache?
