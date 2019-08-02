@@ -21,11 +21,17 @@
 const PrivateKeyProvider = require("truffle-privatekey-provider");
  
 const privateKey = "c85ef7d79691fe79573b1a7064c19c1a9819ebdbd1faaab1a8ec92344438aaf4"; // Public Key: 0xcd2a3d9f938e13cd947ec05abc7fe734df8dd826
-
+const privateKey2 = "0c06818f82e04c564290b32ab86b25676731fc34e9a546108bf109194c8e3aae"; // Public Add: 0x7986b3DF570230288501EEa3D890bd66948C9B79
 module.exports = {
   networks: {
     regtest: {
       provider: new PrivateKeyProvider(privateKey, "http://127.0.0.1:4444"),
+      host: "127.0.0.1",
+      port: 4444,
+      network_id: 33,
+    },
+    regtestAccountTwo: {
+      provider: new PrivateKeyProvider(privateKey2, "http://127.0.0.1:4444"),
       host: "127.0.0.1",
       port: 4444,
       network_id: 33,

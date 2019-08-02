@@ -12,6 +12,7 @@ truffle/build
 
 **/package-lock.json
 **/yarn.lock
+**/yarn-error.log
 **/ganache-*.log
 **/node_modules
 **/.DS_Store
