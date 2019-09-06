@@ -1,18 +1,18 @@
-var BigNumber = require("bignumber.js");
+const BigNumber = require("bignumber.js");
 
-var Units = {};
+const RBTCtcUnits = {};
 
-var rawUnits = require("./units.json");
-var units = {};
+import rawUnits from "./units.json";
+const units = {};
 
 Object.keys(rawUnits).map(function(unit) {
   units[unit] = new BigNumber(rawUnits[unit], 10);
 });
 
-Units.units = rawUnits;
+RBTCtcUnits.units = rawUnits;
 
-var re = RegExp(/^[0-9]+\.?[0-9]*$/);
-Units.convert = function(value, from, to) {
+const re = RegExp(/^[0-9]+\.?[0-9]*$/);
+RBTCtcUnits.convert = function(value, from, to) {
   if (!re.test(value)) {
     throw new Error("Unsupported value");
   }
@@ -24,19 +24,19 @@ Units.convert = function(value, from, to) {
   if (!units[to]) {
     throw new Error("Unsupported output unit");
   }
+
   return new BigNumber(value, 10)
-    .mul(units[from])
-    .round(0, BigNumber.ROUND_DOWN)
-    .div(units[to])
+    .multipliedBy(units[from])
+    .dividedBy(units[to])
+    .decimalPlaces(2)
     .toString(10);
 };
 
-Units.lazyConvert = function(value, to) {
-  var tmp = value.split(" ");
+RBTCtcUnits.lazyConvert = function(value, to) {
+  const tmp = value.split(" ");
   if (tmp.length !== 2) {
     throw new Error("Invalid input");
   }
-  return Units.convert(tmp[0], tmp[1], to) + " " + to;
+  return RBTCtcUnits.convert(tmp[0], tmp[1], to) + " " + to;
 };
-
-module.exports = Units;
+export default RBTCtcUnits;

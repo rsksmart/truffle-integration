@@ -7,6 +7,7 @@ contract Coin {
 
     event Sent(address from, address to, uint256 amount);
     event Mint(address to, uint256 amount);
+    event GetBalance(address target, uint256 amount);
     uint public INITIAL_SUPPLY = 120000;
 
     constructor() public{
@@ -24,5 +25,9 @@ contract Coin {
         balances[msg.sender] -= amount;
         balances[receiver] += amount;
         emit Sent(msg.sender, receiver, amount);
+    }
+    function getBalance() public returns (uint256)  {
+        emit GetBalance(msg.sender, balances[msg.sender]);
+        return balances[msg.sender];
     }
 }

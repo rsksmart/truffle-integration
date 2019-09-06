@@ -15,9 +15,10 @@
 // }
 
 export async function web3Request(name, args, web3Instance) {
-  let fn = web3Instance.eth[name];
-
-  return await fn.apply(web3Instance.eth, args);
+  if (web3Instance) {
+    let fn = web3Instance.eth[name];
+    return await fn.apply(web3Instance.eth, args);
+  }
 }
 
 export async function web3ActionCreator(dispatch, getState, name, args) {
