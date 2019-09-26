@@ -4,7 +4,7 @@
 1. Ensure you are running xcode directly and not the command-line instance. Run `sudo xcode-select -s /Applications/Xcode.app/Contents/Developer`
 
 ## Clone the RSK truffle-integration
-1. git clone https://github.com/rootstock/truffle-integration
+1. git clone https://github.com/rsksmart/truffle-integration
 1. cd truffle-integration/
 
 ## RSKJ Docker
