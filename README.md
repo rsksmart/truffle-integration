@@ -4,7 +4,7 @@
 1. Ensure you are running xcode directly and not the command-line instance. Run `sudo xcode-select -s /Applications/Xcode.app/Contents/Developer`
 
 ## Clone the RSK truffle-integration
-1. git clone https://github.com/rootstock/truffle-integration
+1. git clone https://github.com/rsksmart/truffle-integration
 1. cd truffle-integration/
 
 ## RSKJ Docker
@@ -36,8 +36,8 @@ Run docker commands with `sudo`
 ## RSKJ Docker Contribute
 1. Sign in at https://hub.docker.com/ (or register a new account)
 
-
 ## Ganache
+1. Make sure you are running the docker instance explained above.
 1. Navigate to `/ganache`
 1. `npm install`. This will install required dependencies for ganache
 1. `npm start` will start Ganache in development environment
