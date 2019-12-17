@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chrisli30/truffle-integration.git"
+    "url": "https://github.com/rsksmart/truffle-integration.git"
   },
   "keywords": [
     "rsk",
@@ -19,7 +19,7 @@
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/chrisli30/truffle-integration/issues"
+    "url": "https://github.com/rsksmart/truffle-integration/issues"
   },
-  "homepage": "https://github.com/chrisli30/truffle-integration#readme"
+  "homepage": "https://github.com/rsksmart/truffle-integration#readme"
 }
