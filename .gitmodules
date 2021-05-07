@@ -1,5 +1,4 @@
 [submodule "ganache"]
 	path = ganache
 	url = https://github.com/trufflesuite/ganache.git
-	branch = release/2.3.2
 
