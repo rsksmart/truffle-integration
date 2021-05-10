@@ -12,11 +12,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@openzeppelin/contracts": "^4.1.0",
     "openzeppelin-solidity": "4.1.0",
     "truffle": "^5.3.5",
     "truffle-hdwallet-provider": "^1.0.11",
     "truffle-privatekey-provider": "^1.5.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "hardhat": "^2.2.1"
+  },
   "description": ""
 }
